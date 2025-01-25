@@ -1,13 +1,27 @@
 import React from "react";
 import BlogsComp from "../components/Blogs/BlogsComp";
 import Location from "../components/Location/Location";
+import BackgroundImage from "../assets/coverabout2.webp"; // นำเข้าภาพพื้นหลัง
 
 const About = () => {
   return (
     <>
+      {/* Hero Section */}
+      <div
+        className="h-[100vh] bg-cover bg-center bg-no-repeat flex flex-col items-center justify-center text-center text-white"
+        style={{ backgroundImage: `url(${BackgroundImage})` }}
+      >
+        <h1 className="text-5xl font-bold">ABOUT US</h1>
+        <p className="text-lg mt-4 max-w-3xl">
+          Learn more about who we are, what we do, and why we do it. Discover
+          our journey and what makes us unique.
+        </p>
+      </div>
+
+      {/* Main Content */}
       <div className="container pt-14">
         <div className="py-10">
-          <h1 className=" my-8 border-l-8 border-primary/50 py-2 pl-2 text-3xl font-bold">
+          <h1 className="my-8 border-l-8 border-primary/50 py-2 pl-2 text-3xl font-bold">
             About us
           </h1>
           <p>
@@ -32,7 +46,11 @@ const About = () => {
           </p>
         </div>
       </div>
+
+      {/* Location Section */}
       <Location />
+
+      {/* Blogs Section */}
       <BlogsComp />
     </>
   );

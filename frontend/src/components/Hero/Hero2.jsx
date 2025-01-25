@@ -2,7 +2,17 @@ import React from "react";
 import NatureVid from "../../assets/video/norway.mp4";
 
 const Hero = () => {
-  const [priceValue, setPriceValue] = React.useState(30);
+  const [priceValue, setPriceValue] = React.useState(150); // ตั้งค่าเริ่มต้นเป็นราคาขั้นต่ำ
+  const [selectedCountry, setSelectedCountry] = React.useState("");
+  const [selectedMonth, setSelectedMonth] = React.useState("");
+
+  const handleCountryChange = (e) => {
+    setSelectedCountry(e.target.value);
+  };
+
+  const handleMonthChange = (e) => {
+    setSelectedMonth(e.target.value);
+  };
 
   return (
     <div className="relative h-[700px] font-prompt">
@@ -26,31 +36,65 @@ const Hero = () => {
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 py-3">
-            {/* Destination Input */}
+            {/* Dropdown สำหรับเลือกประเทศ */}
             <div>
               <label htmlFor="destination" className="opacity-70">
-                Search your Destination
+                Choose your Destination
               </label>
-              <input
-                type="text"
+              <select
                 name="destination"
                 id="destination"
-                placeholder="Dubai"
-                className="w-full bg-gray-100 border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+                value={selectedCountry}
+                onChange={handleCountryChange}
+                className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 max-h-48 overflow-auto"
+              >
+                <option value="" disabled>
+                  Select a country
+                </option>
+                <option value="Norway">Norway</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Japan">Japan</option>
+                <option value="Iceland">Iceland</option>
+                <option value="Argentina">Argentina</option>
+                <option value="New Zealand">New Zealand</option>
+                <option value="India">India</option>
+                <option value="Turkey">Turkey</option>
+                <option value="Russia">Russia</option>
+                <option value="Switzerland">Switzerland</option>
+                <option value="Egypt">Egypt</option>
+                <option value="Canada">Canada</option>
+                <option value="Indonesia">Indonesia</option>
+              </select>
             </div>
 
-            {/* Date Input */}
+            {/* Dropdown สำหรับเลือกเดือน */}
             <div>
-              <label htmlFor="date" className="opacity-70">
-                Date
+              <label htmlFor="month" className="opacity-70">
+                Choose your Month
               </label>
-              <input
-                type="date"
-                name="date"
-                id="date"
-                className="w-full bg-gray-100 border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+              <select
+                name="month"
+                id="month"
+                value={selectedMonth}
+                onChange={handleMonthChange}
+                className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 max-h-48 overflow-auto"
+              >
+                <option value="" disabled>
+                  Select a month
+                </option>
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="March">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
+              </select>
             </div>
 
             {/* Price Range Input */}
@@ -58,17 +102,17 @@ const Hero = () => {
               <label htmlFor="price" className="opacity-70 block">
                 <div className="w-full flex justify-between items-center">
                   <p>Max Price</p>
-                  <p className="font-bold text-xl">$ {priceValue}</p>
+                  <p className="font-bold text-xl">฿ {priceValue}</p>
                 </div>
               </label>
-              <div className="bg-gray-100 rounded-full p-2 flex items-center justify-center">
+              <div className="bg-gray-100 rounded-lg p-2 flex items-center justify-center">
                 <input
                   type="range"
                   name="price"
                   id="price"
                   className="appearance-none w-full bg-gradient-to-r from-gray-600 to-gray-800 h-2 rounded-full"
-                  min="150"
-                  max="1000"
+                  min="15000"
+                  max="100000"
                   value={priceValue}
                   step="10"
                   onChange={(e) => setPriceValue(e.target.value)}

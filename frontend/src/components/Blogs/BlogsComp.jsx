@@ -45,8 +45,21 @@ const BlogsComp = () => {
                        #05141B`,
         }}
       >
+        {/* Section Featured Posts */}
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold">FEATURED POSTS</h2>
+          <p className="mt-4 text-lg max-w-3xl mx-auto text-gray-300">
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's standard dummy text
+            ever since. Lorem Ipsum is simply dummy text of the printing and
+            typesetting industry. Lorem Ipsum has been the industry's standard
+            dummy text ever since.
+          </p>
+        </div>
+
+        {/* Section Latest Blogs */}
         <section data-aos="fade-up" className="container">
-          <h1 className="my-8 border-l-8 border- py-2 pl-2 text-3xl font-bold">
+          <h1 className="my-8 border-l-8 border-white py-2 pl-2 text-3xl font-bold">
             Our Latest Blogs
           </h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">

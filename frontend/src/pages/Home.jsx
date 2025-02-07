@@ -9,6 +9,7 @@ import BannerPic from "../components/BannerPic/BannerPic";
 import BannerImg from "../assets/cover-women.jpg";
 import Hero2 from "../components/Hero/Hero2";
 import OrderPopup from "../components/OrderPopup/OrderPopup";
+import HeroSlider from "../components/Hero/HeroSlider";
 
 const Home = () => {
   const [orderPopup, setOrderPopup] = useState(false);
@@ -46,7 +47,7 @@ const Home = () => {
   return (
     <>
       <div>
-        <div className="h-[700px] relative">
+        <div className="h-[800px] relative">
           <video
             autoPlay
             loop
@@ -57,7 +58,8 @@ const Home = () => {
           </video>
 
           {/* ส่ง handleSearch ไปยัง Hero2 */}
-          <Hero2 onSearch={handleSearch} />
+          <HeroSlider />
+       
         </div>
         {/* ส่ง filteredTours และ loading ไปยัง Places */}
         <Places
@@ -65,6 +67,7 @@ const Home = () => {
           filteredTours={filteredTours || []} // ป้องกัน undefined
           loading={loading}
         />
+
         <BannerPic img={BannerImg} />
         <Banner />
         <Testimonial />

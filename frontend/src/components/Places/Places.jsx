@@ -78,7 +78,7 @@ const Places = ({ handleOrderPopup, filters }) => {
         {visiblePlaces.length === 0 ? (
           <div className="text-center text-gray-400 text-lg">ไม่พบโปรแกรมทัวร์ที่ตรงกับเงื่อนไข</div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             {visiblePlaces.map((place) => (
               <PlaceCard key={place.id} handleOrderPopup={handleOrderPopup} {...place} />
             ))}

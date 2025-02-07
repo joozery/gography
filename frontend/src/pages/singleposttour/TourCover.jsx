@@ -13,7 +13,7 @@ const TourCover = () => {
       <div
         className="relative h-[70vh] bg-cover bg-center"
         style={{
-          backgroundImage: "url('https://placehold.co/1920x1080')",
+          backgroundImage: "url('https://gography.net/wp-content/uploads/2022/03/AdobeStock_170503432-1536x864.jpg')",
         }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">

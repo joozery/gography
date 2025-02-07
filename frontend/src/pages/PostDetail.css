@@ -1,0 +1,128 @@
+/* General styling for PostDetail component */
+.place-detail {
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1), transparent 50%), 
+                radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.1), transparent 50%), 
+                rgb(5, 20, 27); /* Updated background */
+    color: white;
+    padding-top: 0px;
+    padding-bottom: 10px;
+  }
+  
+  /* Header section with background image */
+  .header-section {
+    background-size: cover;
+    background-position: center;
+    height: 580px; /* Adjust height for large image */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .overlay {
+    background: rgba(0, 0, 0, 0); /* Semi-transparent black background */
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .title {
+    font-size: 3rem;
+    font-weight: bold;
+  }
+  
+  .location {
+    font-size: 1.5rem;
+    color: #cbd5e0; /* Light gray */
+  }
+  
+  /* Button for Download Tour Plan */
+  .download-btn {
+    display: inline-block;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    background-color: #3b82f6;
+    color: white;
+    font-weight: 600;
+    border-radius: 9999px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .download-btn:hover {
+    background-color: #2563eb;
+  }
+  
+  /* Information Section */
+  .info-section {
+    background-color: white;
+    color: black;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  
+  .info-list {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+  }
+  
+  .info-list li {
+    margin-bottom: 0.5rem; /* This replaces the "space-y-2" class */
+  }
+  
+  .price-section {
+    margin-top: 2rem;
+    font-size: 1.875rem;
+    font-weight: 700;
+  }
+  
+  .price {
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+  
+  /* Tourplan Section */
+  .tourplan-section {
+    margin-top: 2rem;
+  }
+  
+  .day-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  
+  .day-img {
+    width: 100%;
+    height: 15rem;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .tour-day {
+    margin-top: 1.5rem;
+  }
+  
+  /* Gallery Section */
+  .gallery-section {
+    margin-top: 2rem;
+  }
+  
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .gallery-img {
+    width: 100%;
+    height: 12rem;
+    object-fit: cover;
+    border-radius: 0.5rem;
+  }
+  
+  

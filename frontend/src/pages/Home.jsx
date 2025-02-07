@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Hero from "../components/Hero/Hero";
 import NatureVid from "../assets/video/main.mp4";
 import BlogsComp from "../components/Blogs/BlogsComp";
@@ -11,11 +11,38 @@ import Hero2 from "../components/Hero/Hero2";
 import OrderPopup from "../components/OrderPopup/OrderPopup";
 
 const Home = () => {
-  const [orderPopup, setOrderPopup] = React.useState(false);
+  const [orderPopup, setOrderPopup] = useState(false);
+  const [filteredTours, setFilteredTours] = useState([]); // เก็บผลลัพธ์การค้นหา
+  const [loading, setLoading] = useState(false); // จัดการสถานะการโหลด
+
+  // ฟังก์ชันจัดการการค้นหา
+  const handleSearch = (filters) => {
+    console.log("Filters received in Home:", filters);
+    setLoading(true);
+  
+    const queryParams = new URLSearchParams({
+      country: filters.country || "",
+      month: filters.month || "",
+      maxPrice: filters.maxPrice || 0,
+    }).toString();
+  
+    fetch(`http://localhost:3002/api/tours?${queryParams}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setFilteredTours(data.tours || []);
+      })
+      .catch((error) => {
+        console.error("Error fetching tours:", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   const handleOrderPopup = () => {
     setOrderPopup(!orderPopup);
   };
+
   return (
     <>
       <div>
@@ -28,13 +55,18 @@ const Home = () => {
           >
             <source src={NatureVid} type="video/mp4" />
           </video>
-          
-          <Hero2 />
+
+          {/* ส่ง handleSearch ไปยัง Hero2 */}
+          <Hero2 onSearch={handleSearch} />
         </div>
-        <Places handleOrderPopup={handleOrderPopup} />
+        {/* ส่ง filteredTours และ loading ไปยัง Places */}
+        <Places
+          handleOrderPopup={handleOrderPopup}
+          filteredTours={filteredTours || []} // ป้องกัน undefined
+          loading={loading}
+        />
         <BannerPic img={BannerImg} />
         <Banner />
-        
         <Testimonial />
         <BlogsComp />
         <OrderPopup orderPopup={orderPopup} setOrderPopup={setOrderPopup} />

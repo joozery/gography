@@ -9,51 +9,48 @@ export default function AdminLogin() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Function to handle login logic
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3002";
+
   const handleLogin = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // หยุดการรีเฟรชหน้า
     setError("");
     setLoading(true);
-
+  
     try {
-      console.log("🔄 Sending login request...");
-      const response = await fetch("http://192.168.1.55:3000/api/admin/login", {  // ใช้ IP ของเครื่อง Mac
+      const response = await fetch(`${API_URL}/api/admin/login`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json", // แจ้งว่า body เป็น JSON
         },
-        body: JSON.stringify({ email, password }), // 👈 ส่งรหัสผ่านแบบ plaintext
+        body: JSON.stringify({ email, password }), // ส่งข้อมูล
       });
-
+  
       const data = await response.json();
-      console.log("🔍 Response from server:", data);
-
-      if (response.ok && data.token) {
-        handleLoginSuccess(data.token);
+  
+      if (response.ok) {
+        // ✅ Login สำเร็จ
+        console.log("✅ Login successful:", data);
+  
+        // เก็บสถานะการล็อกอินใน localStorage
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("adminId", data.admin.id);
+        localStorage.setItem("adminEmail", data.admin.email);
+  
+        // Redirect ไปหน้า Dashboard
+        navigate("/admin");
       } else {
-        handleLoginError(data.error || "Invalid credentials. Please try again.");
+        // แสดงข้อความ Error
+        setError(data.error || "Invalid email or password.");
       }
-    } catch (error) {
-      handleLoginError("Server error. Please try again later.");
+    } catch (err) {
+      setError("Cannot connect to the server. Please try again.");
+      console.error("❌ Error:", err);
     } finally {
       setLoading(false);
     }
   };
-
-  // Function to handle successful login
-  const handleLoginSuccess = (token) => {
-    console.log("✅ Login successful! Token:", token);
-    localStorage.setItem("token", token);
-    localStorage.setItem("isLoggedIn", "true");
-    navigate("/admin");
-  };
-
-  // Function to handle login error
-  const handleLoginError = (errorMessage) => {
-    setError(errorMessage);
-    console.error("❌ Login failed:", errorMessage);
-  };
-
+  
+  
   return (
     <div className="login-container">
       <div className="login-box">
@@ -66,7 +63,7 @@ export default function AdminLogin() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              autoComplete="email"
+              placeholder="Enter your email"
             />
           </div>
           <div className="input-group">
@@ -76,7 +73,7 @@ export default function AdminLogin() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              autoComplete="current-password"
+              placeholder="Enter your password"
             />
           </div>
           {error && <p className="error">{error}</p>}

@@ -1,22 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import NatureVid from "../../assets/video/norway.mp4";
 
-const Hero = () => {
-  const [priceValue, setPriceValue] = React.useState(150); // ตั้งค่าเริ่มต้นเป็นราคาขั้นต่ำ
-  const [selectedCountry, setSelectedCountry] = React.useState("");
-  const [selectedMonth, setSelectedMonth] = React.useState("");
+const Hero = ({ onSearch }) => {
+  const [priceValue, setPriceValue] = useState(150000);
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState("");
 
-  const handleCountryChange = (e) => {
-    setSelectedCountry(e.target.value);
+  const monthMapping = {
+    January: 1, February: 2, March: 3, April: 4, May: 5, June: 6,
+    July: 7, August: 8, September: 9, October: 10, November: 11, December: 12,
   };
 
-  const handleMonthChange = (e) => {
-    setSelectedMonth(e.target.value);
+  const handleSearch = () => {
+    const filters = {
+      country: selectedCountry || "",
+      month: selectedMonth || "",
+      maxPrice: parseInt(priceValue, 10) || 0, // แปลงให้เป็นตัวเลข
+    };
+
+    console.log("✅ Filters sent from Hero:", filters); // Debug เช็คค่าที่ส่งไป Home
+    onSearch(filters); // ส่งค่าฟิลเตอร์ไปยัง `Home.jsx`
   };
 
   return (
     <div className="relative h-[700px] font-prompt">
-      {/* วิดีโอพื้นหลัง */}
       <video
         autoPlay
         loop
@@ -26,31 +33,24 @@ const Hero = () => {
         <source src={NatureVid} type="video/mp4" />
       </video>
 
-      {/* ฟิลเตอร์ค้นหา */}
       <div className="absolute bottom-[-60px] left-1/2 transform -translate-x-1/2 z-10 w-full px-4">
         <div className="bg-white shadow-lg rounded-md p-6 w-full max-w-[1200px] mx-auto">
           <div className="text-center mb-4">
             <p className="text-sm text-gray-500">Our Packages</p>
-            <h2 className="text-2xl font-bold text-gray-800">
-              Search Your Destination
-            </h2>
+            <h2 className="text-2xl font-bold text-gray-800">Search Your Destination</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 py-3">
             {/* Dropdown สำหรับเลือกประเทศ */}
             <div>
-              <label htmlFor="destination" className="opacity-70">
-                Choose your Destination
-              </label>
+              <label htmlFor="destination" className="opacity-70">Choose your Destination</label>
               <select
                 name="destination"
                 id="destination"
                 value={selectedCountry}
-                onChange={handleCountryChange}
-                className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 max-h-48 overflow-auto"
+                onChange={(e) => setSelectedCountry(e.target.value)}
+                className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="" disabled>
-                  Select a country
-                </option>
+                <option value="">Select a country</option>
                 <option value="Norway">Norway</option>
                 <option value="Georgia">Georgia</option>
                 <option value="Japan">Japan</option>
@@ -69,19 +69,15 @@ const Hero = () => {
 
             {/* Dropdown สำหรับเลือกเดือน */}
             <div>
-              <label htmlFor="month" className="opacity-70">
-                Choose your Month
-              </label>
+              <label htmlFor="month" className="opacity-70">Choose your Month</label>
               <select
                 name="month"
                 id="month"
                 value={selectedMonth}
-                onChange={handleMonthChange}
-                className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 max-h-48 overflow-auto"
+                onChange={(e) => setSelectedMonth(e.target.value)}
+                className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="" disabled>
-                  Select a month
-                </option>
+                <option value="">Select a month</option>
                 <option value="January">January</option>
                 <option value="February">February</option>
                 <option value="March">March</option>
@@ -112,7 +108,7 @@ const Hero = () => {
                   id="price"
                   className="appearance-none w-full bg-gradient-to-r from-gray-600 to-gray-800 h-2 rounded-full"
                   min="15000"
-                  max="100000"
+                  max="500000"
                   value={priceValue}
                   step="10"
                   onChange={(e) => setPriceValue(e.target.value)}
@@ -120,7 +116,10 @@ const Hero = () => {
               </div>
             </div>
           </div>
-          <button className="bg-gradient-to-r from-gray-600 to-gray-800 text-white hover:scale-105 px-6 py-3 rounded-full duration-300 mx-auto block">
+          <button
+            onClick={handleSearch}
+            className="bg-gradient-to-r from-gray-600 to-gray-800 text-white hover:scale-105 px-6 py-3 rounded-full duration-300 mx-auto block"
+          >
             Search Now
           </button>
         </div>

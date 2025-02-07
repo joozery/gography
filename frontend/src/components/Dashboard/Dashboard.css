@@ -1,16 +1,29 @@
 /* Dashboard Layout */
 .dashboard-container {
-    display: flex;
-    height: 100vh;
-    background-color: #f4f4f4;
-    font-family: 'Prompt', sans-serif;
-  }
-  
-  .dashboard-main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
+  display: flex;
+  height: 100vh;
+  background-color: #f4f4f4;
+  font-family: 'Prompt', sans-serif;
+  overflow: hidden; /* ป้องกันเนื้อหาเกิน */
+}
+
+.dashboard-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* ป้องกันเนื้อหาเกิน */
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto; /* เพิ่ม scroll หากเนื้อหาเกิน */
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  margin: 10px;
+}
+
   
   /* Sidebar Styles */
   .sidebar {
@@ -43,23 +56,10 @@
     transition: background 0.3s;
   }
   
-  .sidebar-item:hover, .sidebar-item.active {
-    background: #374151;
-  }
+ 
   
-  .sidebar-logout {
-    margin-top: auto;
-    background: #000000;
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
+
   
-  .sidebar-logout:hover {
-    background: #515050;
-  }
   
   /* Header Styles */
   .header {

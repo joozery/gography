@@ -1,44 +1,37 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-const BlogCard = ({ image, date, title, description, author }) => {
+const BlogCard = ({ id, image, title, description, date }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/tours/${id}`); // เปลี่ยนลิงก์ไปยังหน้า SingleTourDetails
+  };
+
   return (
-    <>
-      <Link
-        to={`/blogs/${title}`}
-        onClick={() => {
-          window.scrollTo(0, 0);
-        }}
-        state={{ image, date, title, description, author }}
-      >
-        <div
-          className="p-4 shadow-lg rounded-lg text-white transition-all duration-500 hover:shadow-xl font-prompt"
-          style={{
-            background: "linear-gradient(100deg, #ffffff 10%, #455663 100%)",
-          }}
-        >
-          <div className="overflow-hidden rounded-lg">
-            <img
-              src={image}
-              alt="No image"
-              className="mx-auto h-[250px] w-full object-cover transition duration-700 hover:scale-110 rounded-t-lg"
-            />
-          </div>
-          <div className="space-y-2 py-3">
-            <h1 className="line-clamp-1 font-bold text-lg text-black">
-              {title}
-            </h1>
-            <p className="text-sm text-gray-700">{date}</p>
-            <p className="text-sm text-gray-600 line-clamp-2">{description}</p>
-          </div>
-          <div className="flex items-center justify-end pt-3">
-            <p className="text-blue-300 font-semibold hover:underline">
-              Learn More ->
-            </p>
-          </div>
+    <div
+      className="bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 relative cursor-pointer"
+      onClick={handleClick}
+    >
+      {/* รูปภาพ */}
+      <div className="h-48 bg-gray-200 flex items-center justify-center">
+        <img
+          src={image}
+          alt={title}
+          className="object-cover h-full w-full"
+        />
+      </div>
+
+      {/* ข้อมูล Blog */}
+      <div className="p-4 text-white">
+        <h3 className="text-lg font-semibold mb-2 line-clamp-2">{title}</h3>
+        <p className="text-sm text-gray-400 mb-4">{date}</p>
+        <p className="text-sm text-gray-300 line-clamp-3">{description}</p>
+        <div className="mt-4 text-blue-400 font-semibold text-sm flex items-center">
+          Learn More →
         </div>
-      </Link>
-    </>
+      </div>
+    </div>
   );
 };
 

@@ -1,0 +1,279 @@
+body {
+    font-family: "Inter", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9fafb;
+    color: #333;
+  }
+  
+  .manage-tour-container {
+    padding: 20px 40px;
+  }
+  
+  .manage-tour-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .tabs {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .tabs span {
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #999;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .tabs .active {
+    background-color: #ffffff;
+    color: #58085d;
+    border: 1px solid #58085d;
+  }
+  
+  .actions {
+    display: flex;
+    align-items: center;
+  }
+  
+  .actions .filter-btn {
+    background-color: #ffffff;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #333;
+  }
+  
+  .actions .filter-btn:hover {
+    background-color: #e2e8f0;
+  }
+  
+  .tour-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .tour-item {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .tour-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .tour-image {
+    width: 100%;
+    height: 200px; /* ความสูงที่เหมาะสม */
+    object-fit: cover; /* ให้รูปภาพครอบคลุมเต็มพื้นที่ */
+    border-radius: 10px; /* มุมโค้ง */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease; /* เพิ่มเอฟเฟกต์เมื่อ Hover */
+  }
+  
+  .tour-image:hover {
+    transform: scale(1.05); /* ขยายเล็กน้อยเมื่อ Hover */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* เพิ่มเงา */
+  }
+  
+  .tour-info {
+    padding: 15px 20px;
+  }
+  
+  .tour-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 8px;
+  }
+  
+  .price {
+    font-weight: bold;
+    font-size: 16px;
+    color: #010000;
+  }
+  
+  .tour-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 10px 0;
+    color: #333;
+  }
+  
+  .tour-description {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 12px;
+    line-height: 1.4;
+  }
+  
+  .tour-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+  }
+  
+  .tour-days {
+    font-size: 14px;
+    color: #888;
+  }
+  
+  .tags {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .tag {
+    background-color: #e0f7fa;
+    color: #00796b;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  
+  .edit-btn {
+    background-color: #ffffff;
+    color: #58085d;
+    border: 1px solid #58085d;
+    border-radius: 25px;
+    padding: 8px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .edit-btn:hover {
+    background-color: #58085d;
+    color: white;
+  }
+
+  .add-tour-btn {
+    background-color: #58085d;
+    color: white;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .add-tour-btn:hover {
+    background-color: #58085d;
+    transform: translateY(-2px);
+  }
+  
+  .add-tour-btn:active {
+    transform: translateY(0);
+  }
+
+  /* Popup Overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* เพิ่มความเข้มของ background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: #ffffff; /* สีพื้นหลังของ popup */
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* เงา */
+  max-width: 400px;
+  width: 100%;
+}
+
+.popup-content h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333; /* สีข้อความหัวข้อ */
+  margin-bottom: 15px;
+}
+
+.popup-content p {
+  font-size: 1rem;
+  color: #555; /* สีข้อความย่อย */
+  margin-bottom: 20px;
+}
+
+.popup-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.cancel-btn {
+  background: #c4c4c4;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: background 0.3s;
+}
+
+.cancel-btn:hover {
+  background: #a0a0a0; /* สีเมื่อ hover */
+}
+
+.delete-btn {
+  background: #e63946;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: background 0.3s;
+}
+
+.delete-btn:hover {
+  background: #d62839; /* สีเมื่อ hover */
+}
+

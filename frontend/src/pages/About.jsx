@@ -1,58 +1,96 @@
-import React from "react";
-import BlogsComp from "../components/Blogs/BlogsComp";
-import Location from "../components/Location/Location";
-import BackgroundImage from "../assets/coverabout2.webp"; // นำเข้าภาพพื้นหลัง
+import React, { useState, useEffect } from "react";
+import BackgroundImage from "../assets/coverabout2.webp";
+
+const API_URL = "http://localhost:3002/api/team-members";
 
 const About = () => {
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [selectedMember, setSelectedMember] = useState(null);
+
+  useEffect(() => {
+    const fetchTeamMembers = async () => {
+      try {
+        const response = await fetch(API_URL);
+        if (!response.ok) throw new Error("Failed to fetch team members");
+        const data = await response.json();
+        setTeamMembers(data.teamMembers);
+        setSelectedMember(data.teamMembers[0]); // Set the first member as default
+      } catch (error) {
+        console.error("Error fetching team members:", error);
+      }
+    };
+
+    fetchTeamMembers();
+  }, []);
+
+  const handleSelectMember = (member) => {
+    setSelectedMember(member);
+  };
+
   return (
-    <>
-      {/* Hero Section */}
-      <div
-        className="h-[100vh] bg-cover bg-center bg-no-repeat flex flex-col items-center justify-center text-center text-white"
-        style={{ backgroundImage: `url(${BackgroundImage})` }}
-      >
-        <h1 className="text-5xl font-bold">ABOUT US</h1>
-        <p className="text-lg mt-4 max-w-3xl">
-          Learn more about who we are, what we do, and why we do it. Discover
-          our journey and what makes us unique.
-        </p>
+    <div
+      className="h-screen bg-cover bg-center bg-no-repeat text-white overflow-hidden"
+      style={{ backgroundImage: `url(${BackgroundImage})` }}
+    >
+      {/* Header Section */}
+      <div className="pt-40 text-center mb-10">
+        <h1 className="text-4xl font-bold">OUR Creative Team</h1>
       </div>
 
-      {/* Main Content */}
-      <div className="container pt-14">
-        <div className="py-10">
-          <h1 className="my-8 border-l-8 border-primary/50 py-2 pl-2 text-3xl font-bold">
-            About us
-          </h1>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia
-            ducimus cupiditate quo harum officia perspiciatis hic ut sunt
-            repudiandae, laboriosam expedita nostrum tempora, consectetur
-            itaque, voluptate error aperiam corrupti ullam aspernatur a!
-            Dolorem, reprehenderit amet quidem deleniti iure rem vel a enim
-            ipsam hic numquam consequatur eius id eaque accusamus repudiandae
-            impedit, quisquam non, harum inventore ratione? Tempora voluptatum
-            ut eligendi corrupti esse, repellat nesciunt illum facilis officiis?
-            Nisi quidem officiis asperiores nostrum ipsa maiores explicabo quia!
-            Corporis provident asperiores fuga eligendi rem temporibus possimus
-            autem excepturi! Facilis sunt corrupti nesciunt asperiores, ab
-            consectetur doloremque, velit a mollitia possimus quaerat!
-          </p>
-          <br />
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi
-            suscipit minus similique aliquam recusandae quisquam id nulla
-            tempora voluptate vero.
-          </p>
+      <div className="flex w-full justify-center gap-10 px-10">
+        {/* Left Side: Team Members */}
+        <div className="grid grid-cols-2 gap-6 w-1/4">
+          {teamMembers.map((member) => (
+            <div
+              key={member.id}
+              className={`cursor-pointer p-4 rounded-lg shadow-md ${
+                selectedMember?.id === member.id
+                  ? "bg-gray-700 border-2 border-primary"
+                  : "bg-gray-800 hover:bg-gray-700"
+              }`}
+              onClick={() => handleSelectMember(member)}
+            >
+              <img
+                src={member.image}
+                alt={member.name}
+                className="rounded-lg object-cover w-full h-auto mx-auto"
+              />
+              <h3 className="text-lg font-bold mt-2 text-center">
+                {`${member.first_name} ${member.last_name}`}
+              </h3>
+              <p className="text-sm text-gray-400 text-center">
+                {member.position}
+              </p>
+            </div>
+          ))}
         </div>
+
+        {/* Center: Selected Member */}
+        {selectedMember && (
+          <div className="flex justify-center items-center">
+            <img
+              src={selectedMember.image}
+              alt={selectedMember.name}
+              className="rounded-lg object-cover max-w-full h-auto"
+            />
+          </div>
+        )}
+
+        {/* Right Side: Member Details */}
+        {selectedMember && (
+          <div className="bg-gray-900 bg-opacity-80 p-6 rounded-lg shadow-lg w-96">
+            <h2 className="text-2xl font-bold mb-2">
+              {`${selectedMember.first_name} ${selectedMember.last_name}`}
+            </h2>
+            <p className="text-lg font-semibold text-gray-400 mb-4">
+              {selectedMember.position}
+            </p>
+            <h3 className="text-xl font-bold mb-2">About me</h3>
+            <p className="text-gray-300">{selectedMember.about}</p>
+          </div>
+        )}
       </div>
-
-      {/* Location Section */}
-      <Location />
-
-      {/* Blogs Section */}
-      <BlogsComp />
-    </>
+    </div>
   );
 };
 

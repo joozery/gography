@@ -9,7 +9,7 @@ export default function AdminLogin() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3002";
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const handleLogin = async (e) => {
     e.preventDefault(); // หยุดการรีเฟรชหน้า
@@ -17,7 +17,7 @@ export default function AdminLogin() {
     setLoading(true);
   
     try {
-      const response = await fetch(`${API_URL}/api/admin/login`, {
+      const response = await fetch(`${API_URL}/api/admin`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json", // แจ้งว่า body เป็น JSON

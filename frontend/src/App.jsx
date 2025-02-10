@@ -73,7 +73,7 @@ const App = () => {
 
         {/* Protected Routes */}
         <Route
-          path="/admin"
+          path="/gography-admin"
           element={
             <ProtectedRoute>
               <Dashboard />

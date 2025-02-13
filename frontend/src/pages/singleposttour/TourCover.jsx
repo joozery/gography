@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-const TourCover = () => {
+const TourCover = ({coverImage, title, information}) => {
+
+  // useEffect(()=> {
+  //   console.log(coverImage);
+  // }, [])
+
   return (
     <div
       className="min-h-screen"
@@ -13,12 +18,14 @@ const TourCover = () => {
       <div
         className="relative h-[70vh] bg-cover bg-center"
         style={{
-          backgroundImage: "url('https://gography.net/wp-content/uploads/2022/03/AdobeStock_170503432-1536x864.jpg')",
+          // backgroundImage: "url('https://gography.net/wp-content/uploads/2022/03/AdobeStock_170503432-1536x864.jpg')",
+          backgroundImage: `url(${coverImage})`,
         }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <h1 className="text-white text-4xl md:text-6xl font-bold text-center px-4">
-            19-28 February 2025 Arctic Aurora Odyssey Iceland
+            {/* 19-28 February 2025 Arctic Aurora Odyssey Iceland */}
+            {title}
           </h1>
         </div>
       </div>
@@ -41,7 +48,7 @@ const TourCover = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-2xl font-bold mb-6">INFORMATION</h2>
           <div className="text-gray-700 leading-relaxed space-y-4">
-            <p>📍<strong>วิธีการเข้าถึงรายละเอียดทริป</strong>📍</p>
+            {/* <p>📍<strong>วิธีการเข้าถึงรายละเอียดทริป</strong>📍</p>
             <p>📌 ท่านสามารถกดที่ Tour Plan เพื่อดูรายละเอียดของทริป</p>
             <p>📂 สำหรับเงื่อนไขและอัตราค่าบริการ ท่านสามารถกดที่ “Terms & Conditions” เพื่ออ่านข้อมูลเพิ่มเติม</p>
             <p>🌟 <strong>ท่องเที่ยวแบบ Road Trip สุดพิเศษกับ Gography</strong> 🌟</p>
@@ -55,7 +62,8 @@ const TourCover = () => {
             <p>จำนวนผู้ร่วมเดินทาง: 6 ท่าน + สต๊าฟ 1</p>
             <p>ที่พัก: Villa Bryggekanten – by Classic Norway Hotels...</p>
             <p>การเดินทาง: รถตู้ 9 ที่นั่ง 1 คัน...</p>
-            <p>หมายเหตุ: โปรแกรมการเดินทางในแต่ละวันอาจจะมีการปรับเปลี่ยน...</p>
+            <p>หมายเหตุ: โปรแกรมการเดินทางในแต่ละวันอาจจะมีการปรับเปลี่ยน...</p> */}
+            {information}
           </div>
         </div>
       </div>

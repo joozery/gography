@@ -59,13 +59,14 @@ const App = () => {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="places/:id" element={<PostDetail />} />
-          <Route path="/tours/:id" element={<SingleTourDetails />} />
+          {/* <Route path="/tours/:id" element={<SingleTourDetails />} /> */}
           <Route path="blogs" element={<Blogs />} />
           <Route path="blogs/:id" element={<SinglePost />} /> {/* ✅ แสดงรายละเอียดโพสต์ */}
           <Route path="best-places" element={<PlacesRoute />} />
           <Route path="about" element={<About />} />
           <Route path="*" element={<NoPage />} />
-          <Route path="/singleposttour" element={<Singleposttour />} />
+          {/* <Route path="/singleposttour" element={<Singleposttour />} /> */}
+          <Route path="/tours/:id" element={<Singleposttour />} />
         </Route>
 
         {/* Login Route */}
@@ -73,7 +74,7 @@ const App = () => {
 
         {/* Protected Routes */}
         <Route
-          path="/gography-admin"
+          path="/admin"
           element={
             <ProtectedRoute>
               <Dashboard />

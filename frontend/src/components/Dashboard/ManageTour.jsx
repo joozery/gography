@@ -14,6 +14,7 @@ const ManageTour = () => {
   const [successMessage, setSuccessMessage] = useState("");
 
   const [imageStatus, setImageStatus] = useState({}); // เก็บสถานะการโหลดภาพ
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchTours = async () => {
@@ -90,7 +91,7 @@ const ManageTour = () => {
           <div className="tour-item" key={tour.id}>
             <img
               //src={imageStatus[tour.id] ? "default-placeholder-image.jpg" : tour.cover_image}
-              src={tour.cover_image === null ? `https://placehold.co/600x400` : tour.cover_image}
+              src={tour.cover_image === null ? `https://placehold.co/600x400` : API_URL + tour.cover_image}
               //src="http://gography.website:3004/uploads/1738720080919-iceland-northern-lights.jpg"
               alt={tour.title}
               className="tour-image"

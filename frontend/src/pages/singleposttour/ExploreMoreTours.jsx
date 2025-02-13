@@ -20,6 +20,7 @@ const CustomArrow = ({ className, onClick, arrowType }) => (
 const ExploreMoreTours = () => {
   const [tours, setTours] = useState([]);
   const [loading, setLoading] = useState(true);
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchTours = async () => {
@@ -99,7 +100,7 @@ const ExploreMoreTours = () => {
               className="border rounded-lg shadow-md p-4 bg-white mx-4"
             >
               <img
-                src={tour.image}
+                src={`${API_URL}${tour.image}`}
                 alt={tour.title}
                 className="w-full h-[280px] object-cover rounded-t-lg"
               />
@@ -112,7 +113,8 @@ const ExploreMoreTours = () => {
                     ? `฿${Number(tour.price).toLocaleString()}`
                     : "N/A"}
                 </p>
-                <button className="mt-2 px-4 py-1 bg-black text-white rounded hover:bg-gray-800 transition-all">
+                <button className="mt-2 px-4 py-1 bg-black text-white rounded hover:bg-gray-800 transition-all"
+                onClick={() => window.location.href = `/tours/${tour.id}`}>
                   รายละเอียดทัวร์
                 </button>
               </div>

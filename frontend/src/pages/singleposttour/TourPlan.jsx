@@ -1,108 +1,9 @@
 import React, { useState } from "react";
 
 const TourDetails = ({ data }) => {
-  // const plans = [
-  //   {
-  //     day: 1,
-  //     date: "4 of June",
-  //     sessions: {
-  //       Morning: [
-  //         { time: "9:30", detail: "Fusce posuere orci nec purus mattis lobortis." },
-  //         { time: "10:00", detail: "Nullam eu nulla vel mauris eu eu lorem." },
-  //         { time: "11:30", detail: "Etiam mollis nulla at nulla condimentum." },
-  //       ],
-  //       Afternoon: [
-  //         { time: "13:30", detail: "Mauris sed tellus dapibus, luctus est." },
-  //         { time: "15:30", detail: "Pellentesque ultricies luctus porta." },
-  //       ],
-  //       Evening: [
-  //         { time: "17:30", detail: "Vestibulum sit amet nisl lobortis molestie." },
-  //         { time: "18:00", detail: "Morbi consequat sapien eget mollis pulvinar." },
-  //         { time: "19:30", detail: "Etiam mollis nulla at nulla condimentum." },
-  //       ],
-  //     },
-  //     image: "https://gography.net/wp-content/uploads/2024/07/DSC09043.jpg",
-  //   },
-  //   {
-  //     day: 2,
-  //     date: "5 of June",
-  //     sessions: {
-  //       Morning: [
-  //         { time: "9:30", detail: "Fusce posuere orci nec purus mattis lobortis." },
-  //         { time: "11:00", detail: "Nullam eu nulla vel mauris eu eu lorem." },
-  //       ],
-  //       Afternoon: [
-  //         { time: "13:30", detail: "Mauris sed tellus dapibus, luctus est." },
-  //         { time: "15:30", detail: "Pellentesque ultricies luctus porta." },
-  //       ],
-  //       Evening: [
-  //         { time: "17:30", detail: "Vestibulum sit amet nisl lobortis molestie." },
-  //         { time: "18:00", detail: "Morbi consequat sapien eget mollis pulvinar." },
-  //       ],
-  //     },
-  //     image: "https://gography.net/wp-content/uploads/2024/07/DSC05483.jpg",
-  //   },
-  //   {
-  //       day: 3,
-  //       date: "5 of June",
-  //       sessions: {
-  //         Morning: [
-  //           { time: "9:30", detail: "Fusce posuere orci nec purus mattis lobortis." },
-  //           { time: "11:00", detail: "Nullam eu nulla vel mauris eu eu lorem." },
-  //         ],
-  //         Afternoon: [
-  //           { time: "13:30", detail: "Mauris sed tellus dapibus, luctus est." },
-  //           { time: "15:30", detail: "Pellentesque ultricies luctus porta." },
-  //         ],
-  //         Evening: [
-  //           { time: "17:30", detail: "Vestibulum sit amet nisl lobortis molestie." },
-  //           { time: "18:00", detail: "Morbi consequat sapien eget mollis pulvinar." },
-  //         ],
-  //       },
-  //       image: "https://gography.net/wp-content/uploads/2024/07/DSC05483.jpg",
-  //     },
-  //     {
-  //       day: 4,
-  //       date: "5 of June",
-  //       sessions: {
-  //         Morning: [
-  //           { time: "9:30", detail: "Fusce posuere orci nec purus mattis lobortis." },
-  //           { time: "11:00", detail: "Nullam eu nulla vel mauris eu eu lorem." },
-  //         ],
-  //         Afternoon: [
-  //           { time: "13:30", detail: "Mauris sed tellus dapibus, luctus est." },
-  //           { time: "15:30", detail: "Pellentesque ultricies luctus porta." },
-  //         ],
-  //         Evening: [
-  //           { time: "17:30", detail: "Vestibulum sit amet nisl lobortis molestie." },
-  //           { time: "18:00", detail: "Morbi consequat sapien eget mollis pulvinar." },
-  //         ],
-  //       },
-  //       image: "https://gography.net/wp-content/uploads/2024/07/DSC05483.jpg",
-  //     },
-  //     {
-  //       day: 5,
-  //       date: "5 of June",
-  //       sessions: {
-  //         Morning: [
-  //           { time: "9:30", detail: "Fusce posuere orci nec purus mattis lobortis." },
-  //           { time: "11:00", detail: "Nullam eu nulla vel mauris eu eu lorem." },
-  //         ],
-  //         Afternoon: [
-  //           { time: "13:30", detail: "Mauris sed tellus dapibus, luctus est." },
-  //           { time: "15:30", detail: "Pellentesque ultricies luctus porta." },
-  //         ],
-  //         Evening: [
-  //           { time: "17:30", detail: "Vestibulum sit amet nisl lobortis molestie." },
-  //           { time: "18:00", detail: "Morbi consequat sapien eget mollis pulvinar." },
-  //         ],
-  //       },
-  //       image: "https://gography.net/wp-content/uploads/2024/07/DSC05483.jpg",
-
-  //     },
-  // ];
-
-  // const [dayone, setDayone] = useState(data);
+  const removeSpanStyle = (html) => {
+    return html.replace(/<span\s+[^>]*style="[^"]*"[^>]*>/g, '<span>'); // ลบเฉพาะ style ใน <span>
+  };
 
   // ฟังก์ชันเพื่อแปลงวันที่
   const formatDate = (date) => {
@@ -161,7 +62,9 @@ const TourDetails = ({ data }) => {
                   </ul>
                 </div>
               ))} */}
-                <div className="">{plan.description}</div>
+                {/* <div className="">{plan.description}</div> */}
+                <div dangerouslySetInnerHTML={{ __html: removeSpanStyle(plan.description) }}></div>
+                {/* <div dangerouslySetInnerHTML={{ __html: plan.description }}></div> */}
               </div>
 
               {/* ภาพ */}

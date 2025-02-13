@@ -52,7 +52,7 @@ const Navbar = ({ handleOrderPopup }) => {
           {/* ปุ่ม CONTACT US */}
           <div className="flex items-center gap-4">
             <button
-              className="border border-white text-white px-6 py-5 rounded-full hover:bg-white hover:text-black transition-all duration-300 font-normal"
+              className="border border-white text-white px-3 py-3 rounded-full hover:bg-white hover:text-black transition-all duration-300 font-normal"
               onClick={handleOrderPopup}
             >
               CONTACT US

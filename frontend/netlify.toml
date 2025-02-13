@@ -6,3 +6,15 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+[[redirects]]
+  from = "/api/tours/:id"
+  to = "http://gography.website:3004/api/tour/:id"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/tours"
+  to = "http://gography.website:3004/api/tours"
+  status = 200
+  force = true

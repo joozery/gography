@@ -33,7 +33,7 @@ const SingleTourDetails = () => {
   if (error) return <div className="text-center mt-10 text-red-500">{error}</div>;
 
   const coverImageUrl = tour?.cover_image
-    ? `${IMAGE_BASE_URL}${tour.cover_image}`
+    ? `${API_URL}${tour.cover_image}`
     : "https://placehold.co/1920x1080"; // ใช้รูป Placeholder ถ้าไม่มี cover_image
 
   return (

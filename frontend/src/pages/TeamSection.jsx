@@ -3,7 +3,7 @@ import BackgroundImage from "../assets/coverabout2.webp";
 import TeamMemberCard from "./TeamMemberCard";
 import SelectedMemberDetails from "./SelectedMemberDetails";
 
-const API_URL = "http://localhost:3002/api/team-members";
+const API_URL = "http://gography.website:3004/api/team-members";
 
 const TeamSection = () => {
   const [teamMembers, setTeamMembers] = useState([]);

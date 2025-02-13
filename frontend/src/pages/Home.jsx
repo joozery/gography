@@ -27,7 +27,7 @@ const Home = () => {
       maxPrice: filters.maxPrice || 0,
     }).toString();
   
-    fetch(`http://localhost:3002/api/tours?${queryParams}`)
+    fetch(`http://gography.website:3004/api/tours?${queryParams}`)
       .then((response) => response.json())
       .then((data) => {
         setFilteredTours(data.tours || []);

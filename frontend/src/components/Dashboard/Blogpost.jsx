@@ -10,7 +10,7 @@ const Blogpost = () => {
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
-  const API_URL = "http://localhost:3002";
+  const API_URL = "http://gography.website:3004";
 
   // Fetch blog posts from API
   useEffect(() => {

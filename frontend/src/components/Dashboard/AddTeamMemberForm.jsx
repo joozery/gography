@@ -45,7 +45,7 @@ const AddTeamMemberForm = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3002/api/team-members", {
+      const response = await fetch("http://gography.website:3004/api/team-members", {
         method: "POST",
         body: formDataToSend, // ส่งข้อมูลในรูปแบบ FormData
       });

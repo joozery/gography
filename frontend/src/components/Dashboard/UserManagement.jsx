@@ -10,7 +10,7 @@ const UserManagement = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("http://localhost:3002/api/admins");
+        const response = await fetch("http://gography.website:3004/api/admins");
         if (!response.ok) {
           throw new Error("Failed to fetch users");
         }
@@ -38,7 +38,7 @@ const UserManagement = () => {
 
   const handleAddUser = async () => {
     try {
-      const response = await fetch("http://localhost:3002/api/admin/register", {
+      const response = await fetch("http://gography.website:3004/api/admin/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

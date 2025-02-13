@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // ✅ Import useNavigate
 import { Plus, Filter, Trash } from "lucide-react";
 
-const API_URL = "http://localhost:3002/api/team-members"; // URL สำหรับดึงข้อมูลทีมงาน
+const API_URL = "http://gography.website:3004/api/team-members"; // URL สำหรับดึงข้อมูลทีมงาน
 
 const OurTeam = () => {
   const [teamMembers, setTeamMembers] = useState([]);

@@ -24,7 +24,7 @@ const ExploreMoreTours = () => {
   useEffect(() => {
     const fetchTours = async () => {
       try {
-        const response = await fetch("http://localhost:3002/api/tours"); // Replace with your API URL
+        const response = await fetch("http://gography.website:3004/api/tours"); // Replace with your API URL
         if (!response.ok) throw new Error("Failed to fetch tours");
         const data = await response.json();
 

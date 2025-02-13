@@ -10,7 +10,7 @@ export default function Header() {
     // ดึงข้อมูลการแจ้งเตือน
     const fetchNotifications = async () => {
       try {
-        const response = await fetch("http://localhost:3002/api/notifications");
+        const response = await fetch("http://gography.website:3004/api/notifications");
         if (!response.ok) throw new Error("Failed to fetch notifications");
         const data = await response.json();
         setNotifications(data.notifications);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import BackgroundImage from "../assets/coverabout2.webp";
 
-const API_URL = "http://localhost:3002/api/team-members";
+const API_URL = "http://gography.website:3004/api/team-members";
 
 const About = () => {
   const [teamMembers, setTeamMembers] = useState([]);

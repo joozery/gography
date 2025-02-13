@@ -18,7 +18,7 @@ const ManageTour = () => {
   useEffect(() => {
     const fetchTours = async () => {
       try {
-        const response = await fetch("http://localhost:3002/api/tours");
+        const response = await fetch("http://gography.website:3004/api/tours");
         if (!response.ok) throw new Error("Failed to fetch tours");
         const data = await response.json();
         //console.log(data);
@@ -47,7 +47,7 @@ const ManageTour = () => {
   const handleDeleteTour = async () => {
     if (!deleteTourId) return;
     try {
-      const response = await fetch(`http://localhost:3002/api/tours/${deleteTourId}`, {
+      const response = await fetch(`http://gography.website:3004/api/tours/${deleteTourId}`, {
         method: "DELETE",
       });
       if (!response.ok) throw new Error("Failed to delete tour");
@@ -91,7 +91,7 @@ const ManageTour = () => {
             <img
               //src={imageStatus[tour.id] ? "default-placeholder-image.jpg" : tour.cover_image}
               src={tour.cover_image === null ? `https://placehold.co/600x400` : tour.cover_image}
-              //src="http://localhost:3002/uploads/1738720080919-iceland-northern-lights.jpg"
+              //src="http://gography.website:3004/uploads/1738720080919-iceland-northern-lights.jpg"
               alt={tour.title}
               className="tour-image"
               onError={() => handleImageError(tour.id)}

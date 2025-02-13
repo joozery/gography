@@ -36,7 +36,7 @@ export const saveTour = async (tourData) => {
     }
 
     // ส่งข้อมูลไปยัง API
-    const response = await fetch("http://localhost:3002/api/tours", {
+    const response = await fetch("http://gography.website:3004/api/tours", {
       method: "POST",
       body: formData,
     });
@@ -74,7 +74,7 @@ export const saveGallery = async (tourId, gallery) => {
     console.log(`FormData: ${key} =`, value instanceof File ? value.name : value);
   }
 
-  const response = await fetch(`http://localhost:3002/api/tours/${tourId}/gallery`, {
+  const response = await fetch(`http://gography.website:3004/api/tours/${tourId}/gallery`, {
     method: "POST",
     body: formData,
   });
@@ -99,7 +99,7 @@ export const saveTourPlan = async (tourId, tourPlan) => {
   console.log("Validated Tour Plan:", validatedPlan); // ✅ Debug ข้อมูล
 
   try {
-    const response = await fetch(`http://localhost:3002/api/tours/${tourId}/plans`, {
+    const response = await fetch(`http://gography.website:3004/api/tours/${tourId}/plans`, {
       method: "POST",
       body: JSON.stringify({ tourPlan: validatedPlan }),
       headers: { "Content-Type": "application/json" },

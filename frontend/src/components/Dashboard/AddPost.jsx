@@ -31,7 +31,7 @@ const AddPost = () => {
     formData.append("seoKeywords", seoKeywords);
 
     try {
-      const response = await fetch("http://localhost:3002/api/blogposts", {
+      const response = await fetch("{http://gography.website:3004}/api/blogposts", {
         method: "POST",
         body: formData,
       });

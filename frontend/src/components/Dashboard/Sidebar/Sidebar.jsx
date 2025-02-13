@@ -44,7 +44,7 @@ export default function Sidebar() {
   useEffect(() => {
     const fetchAdminInfo = async () => {
       try {
-        const response = await fetch("http://localhost:3002/api/admin/info");
+        const response = await fetch("http://gography.website:3004/api/admin/info");
         if (!response.ok) throw new Error("Failed to fetch admin info");
         const data = await response.json();
         setAdminName(data.name);

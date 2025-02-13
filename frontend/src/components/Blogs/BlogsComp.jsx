@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import BlogCard from "./BlogCard";
 
-const API_URL = "http://localhost:3002"; // URL ของ API
+const API_URL = import.meta.env.VITE_API; // URL ของ API
 
 const BlogsComp = () => {
   const [blogs, setBlogs] = useState([]);

@@ -15,7 +15,7 @@ const Places = ({ handleOrderPopup, filters }) => {
       setVisiblePlaces([]); // ล้างค่าเก่าก่อนโหลดใหม่
 
       try {
-        const url = new URL("http://localhost:3002/api/tours");
+        const url = new URL("http://gography.website:3004/api/tours");
         if (filters?.country) url.searchParams.append("country", filters.country);
         if (filters?.month) url.searchParams.append("month", filters.month);
         if (filters?.maxPrice) url.searchParams.append("maxPrice", filters.maxPrice);

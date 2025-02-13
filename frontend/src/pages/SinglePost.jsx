@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-const API_URL = "http://localhost:3002";
+const API_URL = "http://gography.website:3004";
 
 const SinglePost = () => {
   const { id } = useParams(); // ดึง id จาก URL

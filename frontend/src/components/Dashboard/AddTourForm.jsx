@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import "./AddTourForm.css";
 import TourPlanSection from "./TourPlanSection";
 import GalleryUpload from "./GalleryUpload";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import parse from "html-react-parser";
 import { saveTour, saveTourPlan, saveGallery } from "./tourService";
 
 const AddTourForm = () => {
   const [tourData, setTourData] = useState({
+    
     title: "",
     country: "Norway",
     month: "January",
@@ -18,6 +22,13 @@ const AddTourForm = () => {
     not_included: "",
     gallery: [],
   });
+
+  const handleQuillChange = (value) => {
+    setTourData((prevData) => ({
+      ...prevData,
+      information: value, // เก็บข้อมูลเป็น HTML
+    }));
+  };
 
   const [tourPlan, setTourPlan] = useState([
     { id: 1, day: 1, date: "", description: "", images: [] },
@@ -189,27 +200,34 @@ const AddTourForm = () => {
         </div>
 
         <div className="mb-6">
-          <label>รายละเอียดทัวร์</label>
-          <textarea
-            name="information"
-            value={tourData.information}
-            onChange={handleChange}
-            className="border p-2 rounded w-full h-32"
-          ></textarea>
-        </div>
+    <label>รายละเอียดทัวร์</label>
+    <ReactQuill
+      theme="snow"
+      value={tourData.information}
+      onChange={handleQuillChange}
+      className="border rounded bg-white"
+    />
+  </div>
 
         <TourPlanSection tourPlan={tourPlan || []} setTourPlan={setTourPlan} />
 
         <div className="mb-6">
-          <label>Terms & Conditions</label>
-          <textarea
-            name="terms_conditions"
-            value={tourData.terms_conditions}
-            onChange={handleChange}
-            className="border p-2 rounded w-full h-32"
-            placeholder="กรอกเงื่อนไขและข้อกำหนด"
-          ></textarea>
-        </div>
+  <label>Terms & Conditions</label>
+  <ReactQuill
+    theme="snow"
+    value={tourData.terms_conditions}
+    onChange={(value) => setTourData({ ...tourData, terms_conditions: value })}
+    className="border rounded bg-white"
+    placeholder="กรอกเงื่อนไขและข้อกำหนด"
+  />
+  
+  {/* 🔹 แสดงผล Terms & Conditions ที่ถูกบันทึก */}
+  {tourData.terms_conditions && tourData.terms_conditions !== "<p><br></p>" && (
+    <div className="border p-4 rounded-md bg-gray-100 mt-4">
+      {parse(tourData.terms_conditions)}
+    </div>
+  )}
+</div>
 
         <div className="grid grid-cols-3 gap-4 mt-6">
           <div>
@@ -225,27 +243,42 @@ const AddTourForm = () => {
             />
             / Per person
           </div>
-          <div>
-            <label>Included</label>
-            <textarea
-              name="included"
-              value={tourData.included}
-              onChange={handleChange}
-              className="border p-2 rounded w-full h-32"
-              placeholder="สิ่งที่รวมในแพ็กเกจ"
-            ></textarea>
-          </div>
-          <div>
-            <label>Not Included</label>
-            <textarea
-              name="not_included"
-              value={tourData.not_included}
-              onChange={handleChange}
-              className="border p-2 rounded w-full h-32"
-              placeholder="สิ่งที่ไม่รวมในแพ็กเกจ"
-            ></textarea>
-          </div>
-        </div>
+          <div className="mb-6">
+  <label>Included</label>
+  <ReactQuill
+    theme="snow"
+    value={tourData.included}
+    onChange={(value) => setTourData({ ...tourData, included: value })}
+    className="border rounded bg-white"
+    placeholder="สิ่งที่รวมในแพ็กเกจ"
+  />
+
+  {/* 🔹 แสดงผล Included ที่ถูกบันทึก */}
+  {tourData.included && tourData.included !== "<p><br></p>" && (
+    <div className="border p-4 rounded-md bg-gray-100 mt-4">
+      {parse(tourData.included)}
+    </div>
+  )}
+</div>
+         {/* 🔹 Not Included */}
+  <div className="mb-6">
+    <label>Not Included</label>
+    <ReactQuill
+      theme="snow"
+      value={tourData.not_included}
+      onChange={(value) => setTourData({ ...tourData, not_included: value })}
+      className="border rounded bg-white"
+      placeholder="สิ่งที่ไม่รวมในแพ็กเกจ"
+    />
+
+    {/* 🔹 แสดงผล Not Included ที่ถูกบันทึก */}
+    {tourData.not_included && tourData.not_included !== "<p><br></p>" && (
+      <div className="border p-4 rounded-md bg-gray-100 mt-4">
+        {parse(tourData.not_included)}
+      </div>
+    )}
+  </div>
+</div>
 
         <GalleryUpload gallery={tourData.gallery} setTourData={setTourData} />
 

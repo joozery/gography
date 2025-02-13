@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import "./AddTourForm.css";
 
 const TourPlanSection = ({ tourPlan, setTourPlan }) => {
@@ -20,12 +22,20 @@ const TourPlanSection = ({ tourPlan, setTourPlan }) => {
     }
   };
 
+  // อัปเดตรายละเอียดของแต่ละวัน
+  const handleDescriptionChange = (value, index) => {
+    setTourPlan((prevPlan) =>
+      prevPlan.map((day, i) =>
+        i === index ? { ...day, description: value } : day
+      )
+    );
+  };
+
   // อัปโหลดรูปภาพ
   const handleImageUpload = (e, index) => {
     const files = Array.from(e.target.files);
 
     if (files.length > 0) {
-      console.log("Uploaded files:", files); // Debug ข้อมูลไฟล์ที่อัปโหลด
       setTourPlan((prevPlan) =>
         prevPlan.map((day, i) => {
           if (i === index) {
@@ -47,7 +57,6 @@ const TourPlanSection = ({ tourPlan, setTourPlan }) => {
       prevPlan.map((day, i) => {
         if (i === dayIndex) {
           const updatedImages = day.images.filter((_, imgIdx) => imgIdx !== imageIndex);
-          console.log(`Updated images for Day ${day.day}:`, updatedImages); // Debug
           return { ...day, images: updatedImages };
         }
         return day;
@@ -77,65 +86,63 @@ const TourPlanSection = ({ tourPlan, setTourPlan }) => {
               }}
             />
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <textarea
-              className="w-full border p-2 rounded-md h-32"
-              placeholder="รายละเอียดของวันนี้"
-              value={day.description}
-              onChange={(e) => {
-                setTourPlan((prevPlan) =>
-                  prevPlan.map((d, i) =>
-                    i === index ? { ...d, description: e.target.value } : d
-                  )
-                );
-              }}
+
+          {/* 🔹 ใช้ ReactQuill แทน textarea */}
+          <ReactQuill
+            theme="snow"
+            value={day.description}
+            onChange={(value) => handleDescriptionChange(value, index)}
+            className="custom-quill-editor"
+          />
+
+          {/* 🔹 แสดงผล description โดยแปลง HTML ให้ถูกต้อง */}
+          {day.description && day.description !== "<p><br></p>" && (
+            <div
+              className="border p-4 rounded-md bg-gray-100 mt-4"
+              dangerouslySetInnerHTML={{ __html: day.description }}
             />
-            <div className="border p-4 rounded-md">
-              <label
-                className="flex flex-col items-center justify-center cursor-pointer text-gray-500 h-full"
-                style={{ height: "100px", border: "2px dashed gray" }}
-              >
-                <input
-                  type="file"
-                  multiple
-                  className="hidden"
-                  onChange={(e) => handleImageUpload(e, index)}
-                />
-                <span>เพิ่มภาพ (ลากมาวางได้)</span>
-              </label>
-              <div className="grid grid-cols-4 gap-2 mt-4">
-                {day.images.map((image, imgIndex) => (
-                  <div key={imgIndex} className="relative">
-                    <img
-                      src={image.preview}
-                      alt={`Tour Day ${day.day}`}
-                      className="w-70 h-90 object-cover rounded-md"
-                    />
-                    <button
-                      className="absolute top-1 right-1 bg-red-500 text-white text-xs px-1 rounded"
-                      onClick={() => removeImage(index, imgIndex)}
-                    >
-                      ลบ
-                    </button>
-                  </div>
-                ))}
-              </div>
+          )}
+
+          <div className="border p-4 rounded-md mt-4">
+            <label
+              className="flex flex-col items-center justify-center cursor-pointer text-gray-500 h-full"
+              style={{ height: "100px", border: "2px dashed gray" }}
+            >
+              <input
+                type="file"
+                multiple
+                className="hidden"
+                onChange={(e) => handleImageUpload(e, index)}
+              />
+              <span>เพิ่มภาพ (ลากมาวางได้)</span>
+            </label>
+            <div className="grid grid-cols-4 gap-2 mt-4">
+              {day.images.map((image, imgIndex) => (
+                <div key={imgIndex} className="relative">
+                  <img
+                    src={image.preview}
+                    alt={`Tour Day ${day.day}`}
+                    className="w-70 h-90 object-cover rounded-md"
+                  />
+                  <button
+                    className="absolute top-1 right-1 bg-red-500 text-white text-xs px-1 rounded"
+                    onClick={() => removeImage(index, imgIndex)}
+                  >
+                    ลบ
+                  </button>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       ))}
+
       <div className="flex space-x-4 mt-4">
-        <button
-          className="bg-black text-white px-4 py-2 rounded"
-          onClick={addDay}
-        >
+        <button className="bg-black text-white px-4 py-2 rounded" onClick={addDay}>
           เพิ่มวันทัวร์
         </button>
         {tourPlan.length > 1 && (
-          <button
-            className="bg-red-500 text-white px-4 py-2 rounded"
-            onClick={removeDay}
-          >
+          <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={removeDay}>
             ลบวัน
           </button>
         )}

@@ -1,4 +1,5 @@
 /// ฟังก์ชันบันทึกข้อมูล Tour
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 export const saveTour = async (tourData) => {
   console.log("Preparing to send tour data:", tourData); // Debug
 
@@ -36,7 +37,7 @@ export const saveTour = async (tourData) => {
     }
 
     // ส่งข้อมูลไปยัง API
-    const response = await fetch("http://gography.website:3004/api/tours", {
+    const response = await fetch(`${API_BASE_URL}/api/tours`, {
       method: "POST",
       body: formData,
     });
@@ -74,7 +75,7 @@ export const saveGallery = async (tourId, gallery) => {
     console.log(`FormData: ${key} =`, value instanceof File ? value.name : value);
   }
 
-  const response = await fetch(`http://gography.website:3004/api/tours/${tourId}/gallery`, {
+  const response = await fetch(`${API_BASE_URL}/api/tours/${tourId}/gallery`, {
     method: "POST",
     body: formData,
   });
@@ -99,7 +100,7 @@ export const saveTourPlan = async (tourId, tourPlan) => {
   console.log("Validated Tour Plan:", validatedPlan); // ✅ Debug ข้อมูล
 
   try {
-    const response = await fetch(`http://gography.website:3004/api/tours/${tourId}/plans`, {
+    const response = await fetch(`${API_BASE_URL}/api/tours/${tourId}/plans`, {
       method: "POST",
       body: JSON.stringify({ tourPlan: validatedPlan }),
       headers: { "Content-Type": "application/json" },
@@ -114,6 +115,103 @@ export const saveTourPlan = async (tourId, tourPlan) => {
     console.log("Tour plan saved successfully.");
   } catch (error) {
     console.error("Error saving tour plan:", error.message);
+    throw error;
+  }
+};
+
+//Edit Tour
+
+// ดึงข้อมูลทัวร์ตาม tourId
+export const getTourById = async (tourId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/tours/${tourId}`);
+    if (!response.ok) throw new Error("Failed to fetch tour data");
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching tour data:", error);
+    throw error;
+  }
+};
+
+export const getTourPlans = async (tourId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/tours/${tourId}/plans`);
+    if (!response.ok) throw new Error("Failed to fetch tour data");
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching tour data:", error);
+    throw error;
+  }
+};
+
+// อัปเดตข้อมูลทัวร์
+export const updateTour = async (tourId, tourData) => {
+  try {
+    let body;
+    let headers = {};
+
+    if (tourData.cover_image || tourData.pdf_file) {
+      body = new FormData();
+      Object.keys(tourData).forEach((key) => {
+        if (tourData[key] !== null) {
+          body.append(key, tourData[key]);
+        }
+      });
+    } else {
+      body = JSON.stringify(tourData);
+      headers["Content-Type"] = "application/json";
+    }
+
+    const response = await fetch(`${API_BASE_URL}/${tourId}`, {
+      method: "PUT",
+      headers,
+      body,
+    });
+
+    if (!response.ok) throw new Error("Failed to update tour");
+    return await response.json();
+  } catch (error) {
+    console.error("Error updating tour:", error);
+    throw error;
+  }
+};
+
+
+// อัปเดตแผนทัวร์
+export const updateTourPlan = async (tourId, tourPlan) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/${tourId}/plan`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tourPlan }),
+    });
+
+    if (!response.ok) throw new Error("Failed to update tour plan");
+    return await response.json();
+  } catch (error) {
+    console.error("Error updating tour plan:", error);
+    throw error;
+  }
+};
+
+// อัปเดตรูปภาพแกลเลอรี
+export const updateGallery = async (tourId, galleryFiles) => {
+  try {
+    const formData = new FormData();
+    
+    galleryFiles.forEach((file) => {
+      formData.append("gallery", file);
+    });
+
+    const response = await fetch(`${API_BASE_URL}/${tourId}/gallery`, {
+      method: "PUT",
+      body: formData,
+    });
+
+    if (!response.ok) throw new Error("Failed to update gallery");
+    return await response.json();
+  } catch (error) {
+    console.error("Error updating gallery:", error);
     throw error;
   }
 };

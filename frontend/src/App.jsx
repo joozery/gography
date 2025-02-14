@@ -24,6 +24,7 @@ import Singleposttour from "./pages/singleposttour/Singleposttour";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
+import EditTourForm from "./components/Dashboard/EditTourForm";
 
 // ✅ ฟังก์ชันสำหรับ ProtectedRoute
 const ProtectedRoute = ({ children }) => {
@@ -91,6 +92,7 @@ const App = () => {
           <Route path="add-post" element={<AddPost />} /> {/* ✅ ปรับให้เป็นเส้นทางที่ถูกต้อง */}
           <Route path="ourteam" element={<OurTeam />} /> {/* ✅ เพิ่มเส้นทางสำหรับ OurTeam */}
           <Route path="add-tour" element={<AddTourForm />} />
+          <Route path="edit-tour/:id" element={<EditTourForm />} />
           <Route path="add-team-member" element={<AddTeamMemberForm />} />
         </Route>
       </Routes>

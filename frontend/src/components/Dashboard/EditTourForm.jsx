@@ -1,15 +1,210 @@
-import React, { useState } from "react";
-import "./AddTourForm.css";
-import TourPlanSection from "./TourPlanSection";
-import GalleryUpload from "./GalleryUpload";
+import React, { useState, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { getTourById, getTourPlans } from "./tourService";
+import TourPlanSection from "./TourPlanSection";
+import GalleryUpload from "./GalleryUpload";
 import parse from "html-react-parser";
 import { saveTour, saveTourPlan, saveGallery } from "./tourService";
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-const AddTourForm = () => {
-  const navigate = useNavigate();
+const EditTourForm = () => {
+  const { id } = useParams();
+  const [tourId, setTourId] = useState(id);
+  // const [tourData, setTourData] = useState({
+  //   title: "",
+  //   country: "Norway",
+  //   month: "January",
+  //   cover_image: null,
+  //   pdf_file: null,
+  //   information: "",
+  //   terms_conditions: "",
+  //   price: "",
+  //   included: "",
+  //   not_included: "",
+  //   gallery: [],
+  // });
+
+  // const [tourPlan, setTourPlan] = useState([]);
+  // const [loading, setLoading] = useState(false);
+
+  // const handleQuillChange = (value) => {
+  //   setTourData((prevData) => ({
+  //     ...prevData,
+  //     information: value, // เก็บข้อมูลเป็น HTML
+  //   }));
+  // };
+
+  // useEffect(() => {
+  //   if (tourId) {
+  //     loadTourData(tourId);
+  //   }
+  // }, [tourId]);
+
+  // const loadTourData = async (tourId) => {
+  //   try {
+  //     const data = await getTourById(tourId);
+  //     setTourData(data.tour);
+  //     setTourPlan(data.tourPlan || []);
+  //   } catch (error) {
+  //     console.error("Error loading tour data:", error);
+  //   }
+  // };
+
+  // const handleChange = (e) => {
+  //   const { name, value, type, files } = e.target;
+  //   setTourData({
+  //     ...tourData,
+  //     [name]: type === "file" ? files[0] : value,
+  //   });
+  // };
+
+  // const handleSave = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   try {
+  //     await updateTour(tourId, tourData, tourPlan);
+  //     alert("อัปเดตโปรแกรมทัวร์สำเร็จ!");
+  //   } catch (error) {
+  //     console.error("Failed to update tour:", error);
+  //     alert("เกิดข้อผิดพลาดในการอัปเดตโปรแกรมทัวร์");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  // return (
+  //   <div className="p-6">
+  //     <h1 className="text-xl font-bold mb-4">แก้ไขโปรแกรมทัวร์</h1>
+  //     <form onSubmit={handleSave}>
+  //       <div className="grid grid-cols-3 gap-4 mb-6">
+  //         <div>
+  //           <label>ชื่อทัวร์</label>
+  //           <input
+  //             type="text"
+  //             name="title"
+  //             value={tourData.title}
+  //             onChange={handleChange}
+  //             className="border p-2 rounded w-full"
+  //             required
+  //           />
+  //         </div>
+  //         <div>
+  //           <label>ประเทศ</label>
+  //           <select
+  //             name="country"
+  //             value={tourData.country}
+  //             onChange={handleChange}
+  //             className="border p-2 rounded w-full"
+  //           >
+  //             <option value="Norway">Norway</option>
+  //             <option value="Georgia">Georgia</option>
+  //             <option value="Japan">Japan</option>
+  //             <option value="Iceland">Iceland</option>
+  //             <option value="Argentina">Argentina</option>
+  //             <option value="New Zealand">New Zealand</option>
+  //             <option value="India">India</option>
+  //             <option value="Turkey">Turkey</option>
+  //             <option value="Russia">Russia</option>
+  //             <option value="Switzerland">Switzerland</option>
+  //             <option value="Egypt">Egypt</option>
+  //             <option value="Canada">Canada</option>
+  //             <option value="Indonesia">Indonesia</option>
+  //           </select>
+  //         </div>
+  //         <div>
+  //           <label>เดือน</label>
+  //           <select
+  //             name="month"
+  //             value={tourData.month}
+  //             onChange={handleChange}
+  //             className="border p-2 rounded w-full"
+  //           >
+  //             <option value="">Select a month</option>
+  //             <option value="January">January</option>
+  //             <option value="February">February</option>
+  //             <option value="March">March</option>
+  //             <option value="April">April</option>
+  //             <option value="May">May</option>
+  //             <option value="June">June</option>
+  //             <option value="July">July</option>
+  //             <option value="August">August</option>
+  //             <option value="September">September</option>
+  //             <option value="October">October</option>
+  //             <option value="November">November</option>
+  //             <option value="December">December</option>
+  //           </select>
+  //         </div>
+  //       </div>
+
+  //       <div className="grid grid-cols-2 gap-4 mb-6">
+  //         <div>
+  //           <label>เพิ่มรูปปกทัวร์</label>
+  //           <input
+  //             type="file"
+  //             name="cover_image"
+  //             accept="image/*"
+  //             onChange={handleChange}
+  //             className="border p-2 rounded w-full"
+  //           />
+  //         </div>
+  //         <div>
+  //           <label>เพิ่มไฟล์ PDF</label>
+  //           <input
+  //             type="file"
+  //             name="pdf_file"
+  //             accept=".pdf"
+  //             onChange={handleChange}
+  //             className="border p-2 rounded w-full"
+  //           />
+  //         </div>
+  //       </div>
+
+  //       <div className="mb-6">
+  //         <label>รายละเอียดทัวร์</label>
+  //         <ReactQuill
+  //           theme="snow"
+  //           value={tourData.information}
+  //           onChange={handleQuillChange}
+  //           className="border rounded bg-white"
+  //         />
+  //       </div>
+
+  //       <div className="flex justify-end space-x-2 mt-6">
+  //         <button
+  //           type="submit"
+  //           className={`bg-black text-white px-4 py-2 rounded ${
+  //             loading ? "opacity-50 cursor-not-allowed" : ""
+  //           }`}
+  //           disabled={loading}
+  //         >
+  //           {loading ? "กำลังบันทึก..." : "บันทึกการเปลี่ยนแปลง"}
+  //         </button>
+  //       </div>
+  //     </form>
+  //   </div>
+  // );
+
+  const loadTourData = async (tourId) => {
+    try {
+      const data = await getTourById(tourId);
+      setTourData(data.tour);
+      const plans = await getTourPlans(tourId);
+      const formattedPlans = plans.map((plan) => ({
+        id: plans.id,
+        day: plans.day_numer || 1,
+        date: plans.date || null,
+        description: plans.description || "No description provided",
+        images: [
+          
+        ],
+      }));
+      setTourPlan(formattedPlans);
+    } catch (error) {
+      console.error("Error loading tour data:", error);
+    }
+  };
+
   const [tourData, setTourData] = useState({
     title: "",
     country: "Norway",
@@ -61,7 +256,6 @@ const AddTourForm = () => {
   const handleSave = async (e) => {
     e.preventDefault(); // ป้องกันการรีเฟรชหน้า
     setLoading(true); // ตั้งสถานะกำลังบันทึกเพื่อแสดงตัวโหลดใน UI
-
     try {
       // 1. บันทึกข้อมูลโปรแกรมทัวร์ (Tour)
       const result = await saveTour(tourData); // เรียก API ผ่าน saveTour
@@ -76,7 +270,7 @@ const AddTourForm = () => {
       // 2. บันทึกข้อมูลแผนทัวร์ (Tour Plan)
       console.log("Tour ID:", tourId);
       console.log("Tour Plan Data Being Sent:", tourPlan);
-
+      // return
       const validatedPlan = validateTourPlan(tourPlan); // ตรวจสอบและเตรียมข้อมูลแผนทัวร์
       await saveTourPlan(tourId, validatedPlan); // บันทึกแผนทัวร์ใน Backend
       console.log("Tour plan saved successfully!");
@@ -105,7 +299,6 @@ const AddTourForm = () => {
         gallery: [],
       });
       setTourPlan([{ id: 1, day: 1, date: "", description: "", images: [] }]);
-      navigate("/admin/manage-tour");
     } catch (error) {
       console.error("Failed to save tour:", error);
       alert(
@@ -117,27 +310,13 @@ const AddTourForm = () => {
     }
   };
 
-  const GoBackPage = () => {
-    setTourData({
-      title: "",
-      country: "Norway",
-      month: "January",
-      cover_image: null,
-      pdf_file: null,
-      information: "",
-      terms_conditions: "",
-      price: "",
-      included: "",
-      not_included: "",
-      gallery: [],
-    });
-    setTourPlan([{ id: 1, day: 1, date: "", description: "", images: [] }]);
-    navigate('/admin/manage-tour');
-  };
+  useEffect(() => {
+    loadTourData(tourId);
+  }, []);
 
   return (
     <div className="p-6">
-      <h1 className="text-xl font-bold mb-4">เพิ่มโปรแกรมทัวร์</h1>
+      <h1 className="text-xl font-bold mb-4">แก้ไขโปรแกรมทัวร์</h1>
       <form onSubmit={handleSave}>
         <div className="grid grid-cols-3 gap-4 mb-6">
           <div>
@@ -311,7 +490,7 @@ const AddTourForm = () => {
           </div>
         </div>
 
-        <GalleryUpload gallery={tourData.gallery} setTourData={setTourData} />
+        {/* <GalleryUpload gallery={tourData.gallery} setTourData={setTourData} /> */}
 
         <div className="flex justify-end space-x-2 mt-6">
           <button
@@ -326,7 +505,24 @@ const AddTourForm = () => {
           <button
             type="button"
             className="bg-gray-400 text-white px-4 py-2 rounded"
-            onClick={() => GoBackPage()}
+            onClick={() => {
+              setTourData({
+                title: "",
+                country: "Norway",
+                month: "January",
+                cover_image: null,
+                pdf_file: null,
+                information: "",
+                terms_conditions: "",
+                price: "",
+                included: "",
+                not_included: "",
+                gallery: [],
+              });
+              setTourPlan([
+                { id: 1, day: 1, date: "", description: "", images: [] },
+              ]);
+            }}
           >
             ยกเลิก
           </button>
@@ -336,4 +532,4 @@ const AddTourForm = () => {
   );
 };
 
-export default AddTourForm;
+export default EditTourForm;

@@ -70,8 +70,7 @@ const TourDetails = ({ data }) => {
               {/* ภาพ */}
               <div className="w-full md:w-1/3">
                 <img
-                  src={
-                    plan.image === null
+                  src={plan.image === null
                       ? "https://placehold.co/1920x1080"
                       : plan.image
                   }

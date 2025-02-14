@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ConfirmDeletePopup from "./ConfirmDeletePopup";
 import SuccessPopup from "./SuccessPopup";
 import "./ManageTour.css";
+import { Edit } from "lucide-react";
 
 const ManageTour = () => {
   const navigate = useNavigate();
@@ -40,6 +41,10 @@ const ManageTour = () => {
     navigate("/admin/add-tour");
   };
 
+  const EditTour = (tourId) => {
+    navigate(`/admin/edit-tour/${tourId}`);
+  };
+
   const confirmDeleteTour = (tourId) => {
     setDeleteTourId(tourId);
     setIsPopupOpen(true);
@@ -62,6 +67,10 @@ const ManageTour = () => {
       alert("Failed to delete tour. Please try again.");
     }
   };
+
+  function stripHtmlTags(str) {
+    return str.replace(/<[^>]*>/g, '');
+  }
 
   const handleImageError = (id) => {
     setImageStatus((prev) => ({ ...prev, [id]: true }));
@@ -91,7 +100,7 @@ const ManageTour = () => {
           <div className="tour-item" key={tour.id}>
             <img
               //src={imageStatus[tour.id] ? "default-placeholder-image.jpg" : tour.cover_image}
-              src={tour.cover_image === null ? `https://placehold.co/600x400` : API_URL + tour.cover_image}
+              src={tour.cover_image === `https://placehold.co/600x400` ? tour.cover_image : API_URL + tour.cover_image}
               //src="http://gography.website:3004/uploads/1738720080919-iceland-northern-lights.jpg"
               alt={tour.title}
               className="tour-image"
@@ -99,7 +108,7 @@ const ManageTour = () => {
             />
             <div className="tour-info">
               <h3>{tour.title}</h3>
-              <p>{tour.information ? tour.information.slice(0, 50) + "..." : "No description available"}</p>
+              <p>{tour.information ? stripHtmlTags(tour.information).slice(0, 50) + "..." : "No description available"}</p>
               <span>฿{tour.price}</span>
               <div className="tour-footer">
                 <span className="tour-days">{tour.days || "N/A"} days</span>
@@ -108,7 +117,7 @@ const ManageTour = () => {
                     <span key={index} className="tag">{tag}</span>
                   ))}
                 </div>
-                <button className="edit-btn">Edit</button>
+                <button className="edit-btn" onClick={() => EditTour(tour.id)}>Edit</button>
                 <button className="delete-btn" onClick={() => confirmDeleteTour(tour.id)}>Delete</button>
               </div>
             </div>

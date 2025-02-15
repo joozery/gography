@@ -1,6 +1,9 @@
 import React from "react";
 
 const TeamMemberCard = ({ member, isSelected, onClick }) => {
+
+  const API_URL = import.meta.env.VITE_API_URL;
+
   return (
     <div
       className={`cursor-pointer p-4 rounded-lg shadow-md ${
@@ -9,7 +12,7 @@ const TeamMemberCard = ({ member, isSelected, onClick }) => {
       onClick={onClick}
     >
       <img
-        src={member.image}
+        src={`${API_URL}${member.image}`}
         alt={member.name}
         className="rounded-lg object-cover w-full h-auto mx-auto"
       />

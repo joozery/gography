@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 const TourDetails = ({ data }) => {
+  const API_URL = import.meta.env.VITE_API_URL; // URL ของ API
   const removeSpanStyle = (html) => {
     return html.replace(/<span\s+[^>]*style="[^"]*"[^>]*>/g, '<span>'); // ลบเฉพาะ style ใน <span>
   };
@@ -70,9 +71,9 @@ const TourDetails = ({ data }) => {
               {/* ภาพ */}
               <div className="w-full md:w-1/3">
                 <img
-                  src={plan.image === null
+                  src={plan.image === "/uploads/null"
                       ? "https://placehold.co/1920x1080"
-                      : plan.image
+                      : API_URL + plan.image
                   }
                   alt={`Day ${plan.day_number}`}
                   className="w-full h-full rounded-lg shadow-md object-cover"

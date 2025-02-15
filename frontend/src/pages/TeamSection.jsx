@@ -3,7 +3,7 @@ import BackgroundImage from "../assets/coverabout2.webp";
 import TeamMemberCard from "./TeamMemberCard";
 import SelectedMemberDetails from "./SelectedMemberDetails";
 
-const API_URL = "http://gography.website:3004/api/team-members";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const TeamSection = () => {
   const [teamMembers, setTeamMembers] = useState([]);
@@ -12,7 +12,7 @@ const TeamSection = () => {
   useEffect(() => {
     const fetchTeamMembers = async () => {
       try {
-        const response = await fetch(API_URL);
+        const response = await fetch(`${API_URL}/api/team-members`);
         if (!response.ok) throw new Error("Failed to fetch team members");
         const data = await response.json();
         setTeamMembers(data.teamMembers);
@@ -56,7 +56,7 @@ const TeamSection = () => {
         {selectedMember && (
           <div className="flex justify-center items-center">
             <img
-              src={selectedMember.image}
+              src={`${API_URL}${selectedMember.image}`}
               alt={selectedMember.name}
               className="rounded-lg object-cover max-w-full h-auto"
             />

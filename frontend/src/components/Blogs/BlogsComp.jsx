@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import BlogCard from "./BlogCard";
 
-const API_URL = import.meta.env.VITE_API; // URL ของ API
+const API_URL = import.meta.env.VITE_API_URL; // URL ของ API
 
 const BlogsComp = () => {
   const [blogs, setBlogs] = useState([]);
@@ -14,6 +14,8 @@ const BlogsComp = () => {
         const response = await fetch(`${API_URL}/api/blogposts`);
         if (!response.ok) throw new Error("Failed to fetch blog posts");
         const data = await response.json();
+        // console.log(data);
+        // return
         setBlogs(data.blogPosts); // ✅ ตั้งค่าข้อมูลจาก API
       } catch (error) {
         console.error("❌ Error fetching blog posts:", error);
@@ -58,8 +60,8 @@ const BlogsComp = () => {
               <BlogCard
                 key={item.id}
                 id={item.id}
-                //image={`${API_URL}${item.image}`} // ✅ ดึงรูปภาพจาก API
-                image={item.image} // ✅ ดึงรูปภาพจาก API
+                image={`${API_URL}${item.image}`} // ✅ ดึงรูปภาพจาก API
+                // image={item.image} // ✅ ดึงรูปภาพจาก API
                 title={item.title}
                 description={item.content.substring(0, 100) + "..."} // ตัดคำให้อ่านง่าย
                 author="Admin" // กำหนดค่าเริ่มต้น (หรือปรับให้ดึงจาก API ถ้ามี)

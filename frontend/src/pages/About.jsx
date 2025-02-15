@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import BackgroundImage from "../assets/coverabout2.webp";
 
-const API_URL = "http://gography.website:3004/api/team-members";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const About = () => {
   const [teamMembers, setTeamMembers] = useState([]);
@@ -10,7 +10,7 @@ const About = () => {
   useEffect(() => {
     const fetchTeamMembers = async () => {
       try {
-        const response = await fetch(API_URL);
+        const response = await fetch(`${API_URL}/api/team-members`);
         if (!response.ok) throw new Error("Failed to fetch team members");
         const data = await response.json();
         setTeamMembers(data.teamMembers);
@@ -51,12 +51,12 @@ const About = () => {
               onClick={() => handleSelectMember(member)}
             >
               <img
-                src={member.image}
+                src={`${API_URL}${member.image}`}
                 alt={member.name}
                 className="rounded-lg object-cover w-full h-auto mx-auto"
               />
               <h3 className="text-lg font-bold mt-2 text-center">
-                {`${member.first_name} ${member.last_name}`}
+                {`${member.firstName} ${member.lastName}`}
               </h3>
               <p className="text-sm text-gray-400 text-center">
                 {member.position}
@@ -69,7 +69,7 @@ const About = () => {
         {selectedMember && (
           <div className="flex justify-center items-center">
             <img
-              src={selectedMember.image}
+              src={`${API_URL}${selectedMember.image}`}
               alt={selectedMember.name}
               className="rounded-lg object-cover max-w-full h-auto"
             />
@@ -80,7 +80,7 @@ const About = () => {
         {selectedMember && (
           <div className="bg-gray-900 bg-opacity-80 p-6 rounded-lg shadow-lg w-96">
             <h2 className="text-2xl font-bold mb-2">
-              {`${selectedMember.first_name} ${selectedMember.last_name}`}
+              {`${selectedMember.firstName} ${selectedMember.lastName}`}
             </h2>
             <p className="text-lg font-semibold text-gray-400 mb-4">
               {selectedMember.position}

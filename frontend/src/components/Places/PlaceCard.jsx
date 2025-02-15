@@ -26,7 +26,7 @@ const PlaceCard = ({
     >
       {/* รูปภาพ */}
       <img
-        src={`${API_URL}${imageSrc}`}
+        src={imageSrc === "https://placehold.co/600x400" ? "https://placehold.co/212x500" : `${API_URL}${imageSrc}`}
         alt={title}
         className="h-[500px] w-full object-cover rounded-lg group-hover:brightness-75 transition-all duration-500"
       />

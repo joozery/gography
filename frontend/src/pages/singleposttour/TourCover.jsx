@@ -6,6 +6,10 @@ const TourCover = ({coverImage, title, information}) => {
   //   console.log(coverImage);
   // }, [])
 
+  function stripHtmlTags(str) {
+    return str.replace(/<[^>]*>/g, '');
+  }
+
   return (
     <div
       className="min-h-screen"
@@ -63,7 +67,7 @@ const TourCover = ({coverImage, title, information}) => {
             <p>ที่พัก: Villa Bryggekanten – by Classic Norway Hotels...</p>
             <p>การเดินทาง: รถตู้ 9 ที่นั่ง 1 คัน...</p>
             <p>หมายเหตุ: โปรแกรมการเดินทางในแต่ละวันอาจจะมีการปรับเปลี่ยน...</p> */}
-            {information}
+            {stripHtmlTags(information)}
           </div>
         </div>
       </div>

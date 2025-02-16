@@ -138,7 +138,7 @@ const TourPlanSection = ({ tourPlan, setTourPlan }) => {
       ))}
 
       <div className="flex space-x-4 mt-4">
-        <button className="bg-black text-white px-4 py-2 rounded" onClick={addDay}>
+        <button type="button" className="bg-black text-white px-4 py-2 rounded" onClick={addDay}>
           เพิ่มวันทัวร์
         </button>
         {tourPlan.length > 1 && (

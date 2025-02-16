@@ -55,6 +55,9 @@ const AddTourForm = () => {
       date: plan.date || null, // ใช้ null ถ้าไม่มี date
       description: plan.description?.trim() || "No description provided",
       image: plan.images.length > 0 ? plan.images[0].file.name : null, // ใช้ชื่อไฟล์ถ้ามี
+      // images: Array.isArray(plan.images)
+      //   ? plan.images.map((img) => img?.file?.name || null).filter(Boolean)
+      //   : [], // ดึงชื่อไฟล์ทุกอัน และกรองค่าที่เป็น null ออก
     }));
   };
 
@@ -79,6 +82,7 @@ const AddTourForm = () => {
 
       const validatedPlan = validateTourPlan(tourPlan); // ตรวจสอบและเตรียมข้อมูลแผนทัวร์
       await saveTourPlan(tourId, validatedPlan); // บันทึกแผนทัวร์ใน Backend
+      // return;
       console.log("Tour plan saved successfully!");
 
       // 3. บันทึกข้อมูลแกลเลอรี (Gallery) ถ้ามีรูปภาพ
@@ -132,7 +136,7 @@ const AddTourForm = () => {
       gallery: [],
     });
     setTourPlan([{ id: 1, day: 1, date: "", description: "", images: [] }]);
-    navigate('/admin/manage-tour');
+    navigate("/admin/manage-tour");
   };
 
   return (
@@ -259,7 +263,7 @@ const AddTourForm = () => {
           <div>
             <label>Price</label>
             <input
-              type="text"
+              type="number"
               name="price"
               value={tourData.price}
               onChange={handleChange}

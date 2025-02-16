@@ -9,6 +9,11 @@ const PriceSection = ({ included, not_included, price }) => {
       maximumFractionDigits: 2,
     }).format(amount);
   };
+
+  function stripHtmlTags(str) {
+    return str.replace(/<[^>]*>/g, '');
+  }
+  
   return (
     <div
       className="min-h- px-5 py-6" // ลด padding จาก py-10 เป็น py-6
@@ -41,7 +46,7 @@ const PriceSection = ({ included, not_included, price }) => {
               <li>✅ รวมค่าที่พัก</li>
               <li>✅ รวมค่าเดินทางโดยรถ</li>
             </ul> */}
-            {included}
+            {stripHtmlTags(included)}
           </div>
           {/* Not Included */}
           <div className="bg-gray-800 bg-opacity-70 rounded-lg shadow-md p-4 w-full md:w-1/2">
@@ -56,7 +61,7 @@ const PriceSection = ({ included, not_included, price }) => {
               <li>✅ ตั๋วเข้าชมพิพิธภัณฑ์</li>
               <li>✅ ตั๋วเครื่องบิน</li>
             </ul> */}
-            {not_included}
+            {stripHtmlTags(not_included)}
           </div>
         </div>
       </div>

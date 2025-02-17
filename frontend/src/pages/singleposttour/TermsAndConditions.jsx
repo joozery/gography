@@ -1,8 +1,9 @@
 import React from "react";
 
 const TermsAndConditions = ({ terms_conditions }) => {
-  function stripHtmlTags(str) {
-    return str.replace(/<[^>]*>/g, '');
+
+  function RichText({ content }) {
+    return <div dangerouslySetInnerHTML={{ __html: content }} />;
   }
 
   return (
@@ -51,7 +52,8 @@ const TermsAndConditions = ({ terms_conditions }) => {
               <li>📜 ประกันการเดินทาง วงเงิน 2,000,000 บาท</li>
               <li>✈️ อัตราค่าบริการไม่รวมค่าเครื่องบิน</li>
             </ul> */}
-            {stripHtmlTags(terms_conditions)}
+            {/* {stripHtmlTags(terms_conditions)} */}
+            <RichText content={terms_conditions} />
           </div>
         </div>
       </div>

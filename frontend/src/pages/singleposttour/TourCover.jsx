@@ -6,8 +6,8 @@ const TourCover = ({coverImage, title, information}) => {
   //   console.log(coverImage);
   // }, [])
 
-  function stripHtmlTags(str) {
-    return str.replace(/<[^>]*>/g, '');
+  function RichText({ content }) {
+    return <div dangerouslySetInnerHTML={{ __html: content }} />;
   }
 
   return (
@@ -67,7 +67,7 @@ const TourCover = ({coverImage, title, information}) => {
             <p>ที่พัก: Villa Bryggekanten – by Classic Norway Hotels...</p>
             <p>การเดินทาง: รถตู้ 9 ที่นั่ง 1 คัน...</p>
             <p>หมายเหตุ: โปรแกรมการเดินทางในแต่ละวันอาจจะมีการปรับเปลี่ยน...</p> */}
-            {stripHtmlTags(information)}
+            <RichText content={information} />
           </div>
         </div>
       </div>

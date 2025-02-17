@@ -2,9 +2,13 @@ import React, { useState } from "react";
 
 const TourDetails = ({ data }) => {
   const API_URL = import.meta.env.VITE_API_URL; // URL ของ API
-  const removeSpanStyle = (html) => {
-    return html.replace(/<span\s+[^>]*style="[^"]*"[^>]*>/g, '<span>'); // ลบเฉพาะ style ใน <span>
-  };
+  // const removeSpanStyle = (html) => {
+  //   return html.replace(/<span\s+[^>]*style="[^"]*"[^>]*>/g, '<span>'); // ลบเฉพาะ style ใน <span>
+  // };
+
+  function RichText({ content }) {
+    return <div dangerouslySetInnerHTML={{ __html: content }} />;
+  }
 
   // ฟังก์ชันเพื่อแปลงวันที่
   const formatDate = (date) => {
@@ -63,9 +67,7 @@ const TourDetails = ({ data }) => {
                   </ul>
                 </div>
               ))} */}
-                {/* <div className="">{plan.description}</div> */}
-                <div dangerouslySetInnerHTML={{ __html: removeSpanStyle(plan.description) }}></div>
-                {/* <div dangerouslySetInnerHTML={{ __html: plan.description }}></div> */}
+                <RichText content={plan.description} />
               </div>
 
               {/* ภาพ */}

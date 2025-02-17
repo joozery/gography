@@ -10,8 +10,8 @@ const PriceSection = ({ included, not_included, price }) => {
     }).format(amount);
   };
 
-  function stripHtmlTags(str) {
-    return str.replace(/<[^>]*>/g, '');
+  function RichText({ content }) {
+    return <div dangerouslySetInnerHTML={{ __html: content }} />;
   }
   
   return (
@@ -46,7 +46,7 @@ const PriceSection = ({ included, not_included, price }) => {
               <li>✅ รวมค่าที่พัก</li>
               <li>✅ รวมค่าเดินทางโดยรถ</li>
             </ul> */}
-            {stripHtmlTags(included)}
+            <RichText content={included} />
           </div>
           {/* Not Included */}
           <div className="bg-gray-800 bg-opacity-70 rounded-lg shadow-md p-4 w-full md:w-1/2">
@@ -61,7 +61,7 @@ const PriceSection = ({ included, not_included, price }) => {
               <li>✅ ตั๋วเข้าชมพิพิธภัณฑ์</li>
               <li>✅ ตั๋วเครื่องบิน</li>
             </ul> */}
-            {stripHtmlTags(not_included)}
+            <RichText content={not_included} />
           </div>
         </div>
       </div>

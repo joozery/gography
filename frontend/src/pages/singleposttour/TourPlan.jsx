@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 const TourDetails = ({ data }) => {
   const API_URL = import.meta.env.VITE_API_URL; // URL ของ API
+  const IMAGE_BASE_URL = `${API_URL}/uploads/`;
   // const removeSpanStyle = (html) => {
   //   return html.replace(/<span\s+[^>]*style="[^"]*"[^>]*>/g, '<span>'); // ลบเฉพาะ style ใน <span>
   // };
@@ -54,19 +55,6 @@ const TourDetails = ({ data }) => {
 
               {/* เนื้อหา */}
               <div className="flex-1 bg-gray-50 shadow-md rounded-lg p-6">
-                {/* {Object.entries(plan.sessions).map(([session, details]) => (
-                <div key={session} className="mb-6">
-                  <h3 className="text-lg font-semibold text-gray-700 mb-2">{session}:</h3>
-                  <ul className="space-y-2 text-gray-600">
-                    {details.map((item, idx) => (
-                      <li key={idx} className="flex items-start space-x-4">
-                        <span className="font-bold text-gray-700">{item.time}</span>
-                        <span>{item.detail}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))} */}
                 <RichText content={plan.description} />
               </div>
 
@@ -75,7 +63,7 @@ const TourDetails = ({ data }) => {
                 <img
                   src={plan.image === "/uploads/null"
                       ? "https://placehold.co/1920x1080"
-                      : API_URL + plan.image
+                      : `${IMAGE_BASE_URL}${plan.image}`
                   }
                   alt={`Day ${plan.day_number}`}
                   className="w-full h-full rounded-lg shadow-md object-cover"

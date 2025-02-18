@@ -10,7 +10,7 @@ const TourPlanSection = ({ tourPlan, setTourPlan }) => {
       const nextId = prevPlan.length + 1;
       return [
         ...prevPlan,
-        { id: nextId, day: nextId, date: "", description: "", images: [] },
+        { id: nextId, day: nextId, date: "", description: "", images: "" },
       ];
     });
   };
@@ -33,34 +33,49 @@ const TourPlanSection = ({ tourPlan, setTourPlan }) => {
 
   // อัปโหลดรูปภาพ
   const handleImageUpload = (e, index) => {
-    const files = Array.from(e.target.files);
+    // const files = Array.from(e.target.files);
 
-    if (files.length > 0) {
-      setTourPlan((prevPlan) =>
-        prevPlan.map((day, i) => {
-          if (i === index) {
-            const newImages = files.map((file) => ({
-              file,
-              preview: URL.createObjectURL(file),
-            }));
-            return { ...day, images: [...day.images, ...newImages] };
-          }
-          return day;
-        })
-      );
-    }
+    // if (files.length > 0) {
+    //   setTourPlan((prevPlan) =>
+    //     prevPlan.map((day, i) => {
+    //       if (i === index) {
+    //         const newImages = files.map((file) => ({
+    //           file,
+    //           preview: URL.createObjectURL(file),
+    //         }));
+    //         return { ...day, images: [...day.images, ...newImages] };
+    //       }
+    //       return day;
+    //     })
+    //   );
+    // }
+    const file = e.target.files[0]; // รับไฟล์รูปจาก input
+    setTourPlan((prevPlans) =>
+      prevPlans.map((plan, i) =>
+        i === index ? { ...plan, image: file } : plan
+      )
+    );
   };
 
   // ลบรูปภาพ
-  const removeImage = (dayIndex, imageIndex) => {
-    setTourPlan((prevPlan) =>
-      prevPlan.map((day, i) => {
-        if (i === dayIndex) {
-          const updatedImages = day.images.filter((_, imgIdx) => imgIdx !== imageIndex);
-          return { ...day, images: updatedImages };
-        }
-        return day;
-      })
+  // const removeImage = (dayIndex, imageIndex) => {
+  //   setTourPlan((prevPlan) =>
+  //     prevPlan.map((day, i) => {
+  //       if (i === dayIndex) {
+  //         const updatedImages = day.images.filter(
+  //           (_, imgIdx) => imgIdx !== imageIndex
+  //         );
+  //         return { ...day, images: updatedImages };
+  //       }
+  //       return day;
+  //     })
+  //   );
+  // };
+  const removeImage = (index) => {
+    setTourPlan((prevPlans) =>
+      prevPlans.map((plan, i) =>
+        i === index ? { ...plan, image: null } : plan
+      )
     );
   };
 
@@ -111,12 +126,13 @@ const TourPlanSection = ({ tourPlan, setTourPlan }) => {
               <input
                 type="file"
                 multiple
+                accept="image/*"
                 className="hidden"
                 onChange={(e) => handleImageUpload(e, index)}
               />
               <span>เพิ่มภาพ (ลากมาวางได้)</span>
             </label>
-            <div className="grid grid-cols-4 gap-2 mt-4">
+            {/* <div className="grid grid-cols-4 gap-2 mt-4">
               {day.images.map((image, imgIndex) => (
                 <div key={imgIndex} className="relative">
                   <img
@@ -132,17 +148,39 @@ const TourPlanSection = ({ tourPlan, setTourPlan }) => {
                   </button>
                 </div>
               ))}
-            </div>
+            </div> */}
+            {day.image && (
+              <div className="relative">
+                <img
+                  src={day.image.preview || URL.createObjectURL(day.image)}
+                  alt={`Tour Day ${day.day}`}
+                  className="w-70 h-90 object-cover rounded-md"
+                />
+                <button
+                  className="absolute top-1 right-1 bg-red-500 text-white text-xs px-1 rounded"
+                  onClick={() => removeImage(index)}
+                >
+                  ลบ
+                </button>
+              </div>
+            )}
           </div>
         </div>
       ))}
 
       <div className="flex space-x-4 mt-4">
-        <button type="button" className="bg-black text-white px-4 py-2 rounded" onClick={addDay}>
+        <button
+          type="button"
+          className="bg-black text-white px-4 py-2 rounded"
+          onClick={addDay}
+        >
           เพิ่มวันทัวร์
         </button>
         {tourPlan.length > 1 && (
-          <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={removeDay}>
+          <button
+            className="bg-red-500 text-white px-4 py-2 rounded"
+            onClick={removeDay}
+          >
             ลบวัน
           </button>
         )}

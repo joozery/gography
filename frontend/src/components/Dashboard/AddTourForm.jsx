@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./AddTourForm.css";
 import TourPlanSection from "./TourPlanSection";
 import GalleryUpload from "./GalleryUpload";
@@ -24,15 +24,33 @@ const AddTourForm = () => {
     gallery: [],
   });
 
-  const handleQuillChange = (value) => {
+  const [errors, setErrors] = useState({
+    information: false,
+    terms_conditions: false,
+    included: false,
+    not_included: false,
+  });
+
+  // const handleQuillChange = (value) => {
+  //   setTourData((prevData) => ({
+  //     ...prevData,
+  //     information: value, // เก็บข้อมูลเป็น HTML
+  //   }));
+  // };
+
+  const handleQuillChange = (name, value) => {
     setTourData((prevData) => ({
       ...prevData,
-      information: value, // เก็บข้อมูลเป็น HTML
+      [name]: value,
+    }));
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: false, // ล้าง error ถ้าผู้ใช้พิมพ์ข้อมูล
     }));
   };
 
   const [tourPlan, setTourPlan] = useState([
-    { id: 1, day: 1, date: "", description: "", images: [] },
+    { id: 1, day: 1, date: "", description: "", images: null },
   ]);
   const [loading, setLoading] = useState(false);
 
@@ -44,26 +62,64 @@ const AddTourForm = () => {
     });
   };
 
-  const validateTourPlan = (tourPlan) => {
-    console.log("Validating Tour Plan:", tourPlan); // Debug ข้อมูล tourPlan ก่อนส่ง
-    if (!Array.isArray(tourPlan) || tourPlan.length === 0) {
-      throw new Error("โปรดเพิ่มข้อมูลในแผนวันทัวร์อย่างน้อยหนึ่งวัน");
-    }
+  const requirefield = <span className="text-red-700">*</span>;
 
-    return tourPlan.map((plan, index) => ({
-      day: plan.day || index + 1, // ใช้ index ถ้าไม่มี day
-      date: plan.date || null, // ใช้ null ถ้าไม่มี date
-      description: plan.description?.trim() || "No description provided",
-      image: plan.images.length > 0 ? plan.images[0].file.name : null, // ใช้ชื่อไฟล์ถ้ามี
-      // images: Array.isArray(plan.images)
-      //   ? plan.images.map((img) => img?.file?.name || null).filter(Boolean)
-      //   : [], // ดึงชื่อไฟล์ทุกอัน และกรองค่าที่เป็น null ออก
-    }));
-  };
+  // const validateTourPlan = (tourPlan) => {
+  //   console.log("Validating Tour Plan:", tourPlan); // Debug ข้อมูล tourPlan ก่อนส่ง
+  //   if (!Array.isArray(tourPlan) || tourPlan.length === 0) {
+  //     throw new Error("โปรดเพิ่มข้อมูลในแผนวันทัวร์อย่างน้อยหนึ่งวัน");
+  //   }
+
+  //   return tourPlan.map((plan, index) => ({
+  //     day: plan.day || index + 1, // ใช้ index ถ้าไม่มี day
+  //     date: plan.date || null, // ใช้ null ถ้าไม่มี date
+  //     description: plan.description?.trim() || "No description provided",
+  //     // image: plan.images.length > 0 ? plan.images[0].file.name : null, // ใช้ชื่อไฟล์ถ้ามี
+  //     image: Array.isArray(plan.images)
+  //       ? plan.images.map((img) => img?.file?.name || null).filter(Boolean)
+  //       : [], // ดึงชื่อไฟล์ทุกอัน และกรองค่าที่เป็น null ออก
+  //   }));
+  // };
 
   const handleSave = async (e) => {
     e.preventDefault(); // ป้องกันการรีเฟรชหน้า
     setLoading(true); // ตั้งสถานะกำลังบันทึกเพื่อแสดงตัวโหลดใน UI
+    // const validatedPlan = validateTourPlan(tourPlan);
+    // console.log(tourPlan);
+    let missingFields = [];
+
+    if (tourData.title.trim() === "") missingFields.push("ชื่อทัวร์");
+    if (
+      !tourData.information ||
+      tourData.information.trim() === "" ||
+      tourData.information === "<p><br></p>"
+    )
+      missingFields.push("รายละเอียดทัวร์");
+    if (
+      !tourData.terms_conditions ||
+      tourData.terms_conditions.trim() === "" ||
+      tourData.terms_conditions === "<p><br></p>"
+    )
+      missingFields.push("Terms & Conditions");
+    if (tourData.price.trim() === "") missingFields.push("ราคา");
+    if (
+      !tourData.included ||
+      tourData.included.trim() === "" ||
+      tourData.included === "<p><br></p>"
+    )
+      missingFields.push("Included");
+    if (
+      !tourData.not_included ||
+      tourData.not_included.trim() === "" ||
+      tourData.not_included === "<p><br></p>"
+    )
+      missingFields.push("Not Included");
+
+    if (missingFields.length > 0) {
+      alert(`โปรดกรอกข้อมูลให้ครบถ้วน:\n- ${missingFields.join("\n- ")}`);
+      setLoading(false);
+      return;
+    }
 
     try {
       // 1. บันทึกข้อมูลโปรแกรมทัวร์ (Tour)
@@ -71,6 +127,7 @@ const AddTourForm = () => {
       console.log("Saved tour result:", result);
 
       const tourId = result.tourId; // รับ tourId ที่สร้างจาก Backend
+      // const tourId = 158;
 
       if (!tourId) {
         throw new Error("ไม่สามารถสร้างโปรแกรมทัวร์ได้ กรุณาลองใหม่อีกครั้ง");
@@ -80,36 +137,36 @@ const AddTourForm = () => {
       console.log("Tour ID:", tourId);
       console.log("Tour Plan Data Being Sent:", tourPlan);
 
-      const validatedPlan = validateTourPlan(tourPlan); // ตรวจสอบและเตรียมข้อมูลแผนทัวร์
-      await saveTourPlan(tourId, validatedPlan); // บันทึกแผนทัวร์ใน Backend
+      // const validatedPlan = validateTourPlan(tourPlan); // ตรวจสอบและเตรียมข้อมูลแผนทัวร์
+      await saveTourPlan(tourId, tourPlan); // บันทึกแผนทัวร์ใน Backend
       // return;
-      console.log("Tour plan saved successfully!");
+      // console.log("Tour plan saved successfully!");
 
       // 3. บันทึกข้อมูลแกลเลอรี (Gallery) ถ้ามีรูปภาพ
-      console.log("Gallery data being sent:", tourData.gallery);
-      if (tourData.gallery.length > 0) {
-        await saveGallery(tourId, tourData.gallery);
-      }
+      // console.log("Gallery data being sent:", tourData.gallery);
+      // if (tourData.gallery.length > 0) {
+      //   await saveGallery(tourId, tourData.gallery);
+      // }
 
       // แสดงข้อความแจ้งเตือนสำเร็จ
       alert("โปรแกรมทัวร์บันทึกสำเร็จ!");
 
       // รีเซ็ตฟอร์มกลับค่าเริ่มต้น
-      setTourData({
-        title: "",
-        country: "Norway",
-        month: "January",
-        cover_image: null,
-        pdf_file: null,
-        information: "",
-        terms_conditions: "",
-        price: "",
-        included: "",
-        not_included: "",
-        gallery: [],
-      });
-      setTourPlan([{ id: 1, day: 1, date: "", description: "", images: [] }]);
-      navigate("/admin/manage-tour");
+      // setTourData({
+      //   title: "",
+      //   country: "Norway",
+      //   month: "January",
+      //   cover_image: null,
+      //   pdf_file: null,
+      //   information: "",
+      //   terms_conditions: "",
+      //   price: "",
+      //   included: "",
+      //   not_included: "",
+      //   gallery: [],
+      // });
+      // setTourPlan([{ id: 1, day: 1, date: "", description: "", images: [] }]);
+      // navigate("/admin/manage-tour");
     } catch (error) {
       console.error("Failed to save tour:", error);
       alert(
@@ -139,13 +196,17 @@ const AddTourForm = () => {
     navigate("/admin/manage-tour");
   };
 
+  // useEffect(() => {
+  //   console.log("tourData", tourData);
+  // }, [tourData]);
+
   return (
     <div className="p-6">
       <h1 className="text-xl font-bold mb-4">เพิ่มโปรแกรมทัวร์</h1>
       <form onSubmit={handleSave}>
         <div className="grid grid-cols-3 gap-4 mb-6">
           <div>
-            <label>ชื่อทัวร์</label>
+            <label>ชื่อทัวร์ {requirefield}</label>
             <input
               type="text"
               name="title"
@@ -227,26 +288,32 @@ const AddTourForm = () => {
         </div>
 
         <div className="mb-6">
-          <label>รายละเอียดทัวร์</label>
+          <label>รายละเอียดทัวร์ {requirefield}</label>
           <ReactQuill
             theme="snow"
             value={tourData.information}
-            onChange={handleQuillChange}
-            className="border rounded bg-white"
+            onChange={(value) => handleQuillChange("information", value)}
+            required={true}
+            className={`border rounded bg-white ${
+              errors.information ? "border-red-500" : ""
+            }`}
           />
         </div>
 
         <TourPlanSection tourPlan={tourPlan || []} setTourPlan={setTourPlan} />
 
         <div className="mb-6">
-          <label>Terms & Conditions</label>
+          <label>Terms & Conditions {requirefield}</label>
           <ReactQuill
             theme="snow"
             value={tourData.terms_conditions}
+            required
             onChange={(value) =>
               setTourData({ ...tourData, terms_conditions: value })
             }
-            className="border rounded bg-white"
+            className={`border rounded bg-white ${
+              errors.terms_conditions ? "border-red-500" : ""
+            }`}
             placeholder="กรอกเงื่อนไขและข้อกำหนด"
           />
 
@@ -261,7 +328,7 @@ const AddTourForm = () => {
 
         <div className="grid grid-cols-3 gap-4 mt-6">
           <div>
-            <label>Price</label>
+            <label>Price {requirefield}</label>
             <input
               type="number"
               name="price"
@@ -274,14 +341,18 @@ const AddTourForm = () => {
             / Per person
           </div>
           <div className="mb-6">
-            <label>Included</label>
+            <label>Included {requirefield}</label>
             <ReactQuill
               theme="snow"
               value={tourData.included}
+              required
               onChange={(value) =>
-                setTourData({ ...tourData, included: value })
+                // setTourData({ ...tourData, included: value })
+                handleQuillChange("included", value)
               }
-              className="border rounded bg-white"
+              className={`border rounded bg-white ${
+                errors.included ? "border-red-500" : ""
+              }`}
               placeholder="สิ่งที่รวมในแพ็กเกจ"
             />
 
@@ -294,14 +365,18 @@ const AddTourForm = () => {
           </div>
           {/* 🔹 Not Included */}
           <div className="mb-6">
-            <label>Not Included</label>
+            <label>Not Included {requirefield}</label>
             <ReactQuill
               theme="snow"
               value={tourData.not_included}
+              required
               onChange={(value) =>
-                setTourData({ ...tourData, not_included: value })
+                // setTourData({ ...tourData, not_included: value })
+                handleQuillChange("not_included", value)
               }
-              className="border rounded bg-white"
+              className={`border rounded bg-white ${
+                errors.not_included ? "border-red-500" : ""
+              }`}
               placeholder="สิ่งที่ไม่รวมในแพ็กเกจ"
             />
 
@@ -315,7 +390,7 @@ const AddTourForm = () => {
           </div>
         </div>
 
-        <GalleryUpload gallery={tourData.gallery} setTourData={setTourData} />
+        {/* <GalleryUpload gallery={tourData.gallery} setTourData={setTourData} /> */}
 
         <div className="flex justify-end space-x-2 mt-6">
           <button

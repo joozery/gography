@@ -33,7 +33,10 @@ export const saveTour = async (tourData) => {
 
     // Debug ข้อมูลก่อนส่ง
     for (let [key, value] of formData.entries()) {
-      console.log(`FormData content: ${key} =`, value instanceof File ? value.name : value);
+      console.log(
+        `FormData content: ${key} =`,
+        value instanceof File ? value.name : value
+      );
     }
 
     // ส่งข้อมูลไปยัง API
@@ -72,7 +75,10 @@ export const saveGallery = async (tourId, gallery) => {
 
   // Debug ข้อมูล FormData
   for (let [key, value] of formData.entries()) {
-    console.log(`FormData: ${key} =`, value instanceof File ? value.name : value);
+    console.log(
+      `FormData: ${key} =`,
+      value instanceof File ? value.name : value
+    );
   }
 
   const response = await fetch(`${API_BASE_URL}/api/tours/${tourId}/gallery`, {
@@ -88,34 +94,27 @@ export const saveGallery = async (tourId, gallery) => {
   console.log("Gallery saved successfully.");
 };
 
-// ฟังก์ชันบันทึก Tour Plan
+//SavePlans New
 export const saveTourPlan = async (tourId, tourPlan) => {
-  const validatedPlan = tourPlan.map((plan, index) => ({
-    day: plan.day || index + 1, // ใช้ index ถ้าไม่มี day
-    date: plan.date || null,   // ใช้ null ถ้าไม่มี date
-    description: plan.description?.trim() || "No description provided",
-    image: plan.image || null, // ใช้ null ถ้าไม่มีรูปภาพ
-  }));
+  for (let plan of tourPlan) {
+    const formData = new FormData();
+    formData.append("tourId", 197);
+    formData.append("day", plan.day);
+    formData.append("date", plan.date);
+    formData.append("description", plan.description);
+    // formData.append("image", plan.image); // อัปโหลด 1 รูปต่อ 1 วัน
+    if (plan.image) formData.append("image", plan.image); // ✅ ส่งรูป 1 รูปต่อ 1 วัน
 
-  console.log("Validated Tour Plan:", validatedPlan); // ✅ Debug ข้อมูล
-
-  try {
-    const response = await fetch(`${API_BASE_URL}/api/tours/${tourId}/plans`, {
-      method: "POST",
-      body: JSON.stringify({ tourPlan: validatedPlan }),
-      headers: { "Content-Type": "application/json" },
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      console.error("API Error Response:", error);
-      throw new Error(error.error || "Failed to save tour plan");
+    try {
+      await fetch(`${API_BASE_URL}/api/tours/${tourId}/plans`, {
+        method: "POST",
+        body: formData,
+      });
+      console.log("All tour plans uploaded!");
+    } catch (error) {
+      console.error("Error saving tour plan:", error);
+      throw error;
     }
-
-    console.log("Tour plan saved successfully.");
-  } catch (error) {
-    console.error("Error saving tour plan:", error.message);
-    throw error;
   }
 };
 
@@ -144,16 +143,90 @@ export const getTourPlans = async (tourId) => {
   }
 };
 
-// อัปเดตข้อมูลทัวร์
+// // อัปเดตข้อมูลทัวร์
+// export const updateTour = async (tourId, tourData) => {
+//   try {
+//     let body;
+//     let headers = {};
+
+//     if (tourData.cover_image || tourData.pdf_file) {
+//       body = new FormData();
+//       Object.keys(tourData).forEach((key) => {
+//         if (tourData[key] !== null) {
+//           body.append(key, tourData[key]);
+//         }
+//       });
+//     } else {
+//       body = JSON.stringify(tourData);
+//       headers["Content-Type"] = "application/json";
+//     }
+
+//     const response = await fetch(`${API_BASE_URL}/${tourId}`, {
+//       method: "PUT",
+//       headers,
+//       body,
+//     });
+
+//     if (!response.ok) throw new Error("Failed to update tour");
+//     return await response.json();
+//   } catch (error) {
+//     console.error("Error updating tour:", error);
+//     throw error;
+//   }
+// };
+
+// // อัปเดตแผนทัวร์
+// export const updateTourPlan = async (tourId, tourPlan) => {
+//   try {
+//     const response = await fetch(`${API_BASE_URL}/${tourId}/plan`, {
+//       method: "PUT",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({ tourPlan }),
+//     });
+
+//     if (!response.ok) throw new Error("Failed to update tour plan");
+//     return await response.json();
+//   } catch (error) {
+//     console.error("Error updating tour plan:", error);
+//     throw error;
+//   }
+// };
+
+// อัปเดตรูปภาพแกลเลอรี
+// export const updateGallery = async (tourId, galleryFiles) => {
+//   try {
+//     const formData = new FormData();
+
+//     galleryFiles.forEach((file) => {
+//       formData.append("gallery", file);
+//     });
+
+//     const response = await fetch(`${API_BASE_URL}/${tourId}/gallery`, {
+//       method: "PUT",
+//       body: formData,
+//     });
+
+//     if (!response.ok) throw new Error("Failed to update gallery");
+//     return await response.json();
+//   } catch (error) {
+//     console.error("Error updating gallery:", error);
+//     throw error;
+//   }
+// };
+
+// 🟢 อัปเดตข้อมูลทัวร์
 export const updateTour = async (tourId, tourData) => {
   try {
     let body;
     let headers = {};
 
-    if (tourData.cover_image || tourData.pdf_file) {
+    // เช็คว่ามีไฟล์ภาพหรือ PDF ไหม
+    const hasFile = tourData.cover_image instanceof File || tourData.pdf_file instanceof File;
+
+    if (hasFile) {
       body = new FormData();
       Object.keys(tourData).forEach((key) => {
-        if (tourData[key] !== null) {
+        if (tourData[key] !== null && tourData[key] !== undefined) {
           body.append(key, tourData[key]);
         }
       });
@@ -168,16 +241,15 @@ export const updateTour = async (tourId, tourData) => {
       body,
     });
 
-    if (!response.ok) throw new Error("Failed to update tour");
+    if (!response.ok) throw new Error(`Failed to update tour: ${response.statusText}`);
     return await response.json();
   } catch (error) {
-    console.error("Error updating tour:", error);
+    console.error("❌ Error updating tour:", error);
     throw error;
   }
 };
 
-
-// อัปเดตแผนทัวร์
+// 🔵 อัปเดตแผนทัวร์ (Tour Plan)
 export const updateTourPlan = async (tourId, tourPlan) => {
   try {
     const response = await fetch(`${API_BASE_URL}/${tourId}/plan`, {
@@ -186,32 +258,10 @@ export const updateTourPlan = async (tourId, tourPlan) => {
       body: JSON.stringify({ tourPlan }),
     });
 
-    if (!response.ok) throw new Error("Failed to update tour plan");
+    if (!response.ok) throw new Error(`Failed to update tour plan: ${response.statusText}`);
     return await response.json();
   } catch (error) {
-    console.error("Error updating tour plan:", error);
-    throw error;
-  }
-};
-
-// อัปเดตรูปภาพแกลเลอรี
-export const updateGallery = async (tourId, galleryFiles) => {
-  try {
-    const formData = new FormData();
-    
-    galleryFiles.forEach((file) => {
-      formData.append("gallery", file);
-    });
-
-    const response = await fetch(`${API_BASE_URL}/${tourId}/gallery`, {
-      method: "PUT",
-      body: formData,
-    });
-
-    if (!response.ok) throw new Error("Failed to update gallery");
-    return await response.json();
-  } catch (error) {
-    console.error("Error updating gallery:", error);
+    console.error("❌ Error updating tour plan:", error);
     throw error;
   }
 };

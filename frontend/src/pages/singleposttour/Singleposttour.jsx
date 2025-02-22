@@ -32,19 +32,24 @@ function Singleposttour() {
   };
 
   const GetPlansTours = async () => {
-    try {
-      const response = await fetch(`${API_URL}/api/tours/${id}/plans`);
+    // try {
+      
+    // } catch (err) {
+    //   console.error("เกิดข้อผิดพลาดในการดึงข้อมูลทัวร์:", err);
+    //   setError(err.message);
+    // } finally {
+    //   setLoading(false);
+    // }
+    const response = await fetch(`${API_URL}/api/tours/${id}/plans`);
       if (!response.ok) throw new Error("ไม่สามารถโหลดข้อมูลทัวร์ได้");
 
       const data = await response.json();
       // console.log("GetPlansTours", data);
-      setPlans(data.tour_plans);
-    } catch (err) {
-      console.error("เกิดข้อผิดพลาดในการดึงข้อมูลทัวร์:", err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+      if(data.message){
+        setPlans([]);
+      }else{
+        setPlans(data.tour_plans);
+      }
   };
 
   const fetchData = async () => {
@@ -77,7 +82,9 @@ function Singleposttour() {
         information={tour?.information}
       />
       {/* ส่วน Cover ของทัวร์ */}
+      {/* {plans && <TourPlan data={plans} />} */}
       <TourPlan data={plans} />
+
       <TermsAndConditions terms_conditions={tour?.terms_conditions} />
       <PriceSection included={tour?.included} not_included={tour?.not_included} price={tour?.price} />
       <Gallery />

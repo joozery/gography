@@ -48,14 +48,14 @@ const Home = () => {
     <>
       <div>
         <div className="h-[800px] relative">
-          <video
+          {/* <video
             autoPlay
             loop
             muted
             className="absolute right-0 top-0 h-[700px] w-full object-cover z-[-1]"
           >
             <source src={NatureVid} type="video/mp4" />
-          </video>
+          </video> */}
 
           {/* ส่ง handleSearch ไปยัง Hero2 */}
           <HeroSlider />

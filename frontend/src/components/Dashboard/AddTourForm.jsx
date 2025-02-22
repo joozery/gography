@@ -152,21 +152,21 @@ const AddTourForm = () => {
       alert("โปรแกรมทัวร์บันทึกสำเร็จ!");
 
       // รีเซ็ตฟอร์มกลับค่าเริ่มต้น
-      // setTourData({
-      //   title: "",
-      //   country: "Norway",
-      //   month: "January",
-      //   cover_image: null,
-      //   pdf_file: null,
-      //   information: "",
-      //   terms_conditions: "",
-      //   price: "",
-      //   included: "",
-      //   not_included: "",
-      //   gallery: [],
-      // });
-      // setTourPlan([{ id: 1, day: 1, date: "", description: "", images: [] }]);
-      // navigate("/admin/manage-tour");
+      setTourData({
+        title: "",
+        country: "Norway",
+        month: "January",
+        cover_image: null,
+        pdf_file: null,
+        information: "",
+        terms_conditions: "",
+        price: "",
+        included: "",
+        not_included: "",
+        gallery: [],
+      });
+      setTourPlan([{ id: 1, day: 1, date: "", description: "", images: null }]);
+      navigate("/admin/manage-tour");
     } catch (error) {
       console.error("Failed to save tour:", error);
       alert(
@@ -192,7 +192,7 @@ const AddTourForm = () => {
       not_included: "",
       gallery: [],
     });
-    setTourPlan([{ id: 1, day: 1, date: "", description: "", images: [] }]);
+    setTourPlan([{ id: 1, day: 1, date: "", description: "", images: null }]);
     navigate("/admin/manage-tour");
   };
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // ✅ Import useNavigate
 import { Plus, Filter, Trash } from "lucide-react";
 
-const API_URL = "http://gography.website:3004/api/team-members"; // URL สำหรับดึงข้อมูลทีมงาน
+const API_URL = "http://gography.website:3004"; // URL สำหรับดึงข้อมูลทีมงาน
 
 const OurTeam = () => {
   const [teamMembers, setTeamMembers] = useState([]);
@@ -13,7 +13,7 @@ const OurTeam = () => {
     // Fetch team members from API
     const fetchTeamMembers = async () => {
       try {
-        const response = await fetch(API_URL);
+        const response = await fetch(`${API_URL}/api/team-members`);
         if (!response.ok) throw new Error("Failed to fetch team members");
         const data = await response.json();
         setTeamMembers(data.teamMembers); // สมมติ API คืนค่า { teamMembers: [...] }
@@ -38,7 +38,7 @@ const OurTeam = () => {
     if (!confirmDelete) return;
 
     try {
-      const response = await fetch(`${API_URL}/${id}`, {
+      const response = await fetch(`${API_URL}/api/team-members/${id}`, {
         method: "DELETE",
       });
       if (!response.ok) throw new Error("Failed to delete team member");
@@ -104,7 +104,7 @@ const OurTeam = () => {
             className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition duration-300"
           >
             <img
-              src={member.image || "https://via.placeholder.com/300x200?text=No+Image"}
+              src={member.image ? API_URL + member.image : "https://via.placeholder.com/300x200?text=No+Image"}
               alt={member.name}
               className="w-full h-150 object-cover"
             />

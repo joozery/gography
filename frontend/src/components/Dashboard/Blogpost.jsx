@@ -112,7 +112,7 @@ const Blogpost = () => {
             className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition duration-300"
           >
             <img
-              src={post.image || "https://via.placeholder.com/400x300?text=No+Image"}
+              src={post.image ? API_URL + post.image : `https://via.placeholder.com/400x300?text=No+Image`}
               alt={post.title}
               className="w-full h-64 object-cover"
             />

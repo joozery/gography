@@ -32,6 +32,12 @@ const TourDetails = ({ data }) => {
       <div className="container mx-auto px-6 py-10 bg-white shadow-lg rounded-lg">
         <h1 className="text-3xl font-bold text-center mb-8">Tour Plan</h1>
 
+      {data.length === 0 ? (
+        <div className="text-center">
+          <p className="text-gray-600">ไม่พบข้อมูลของ Tour</p>
+        </div>
+      ) : (
+        <>
         {data.map((plan, index) => (
           <div key={index} className="relative mb-10">
             {/* เส้น Timeline */}
@@ -52,16 +58,13 @@ const TourDetails = ({ data }) => {
                   </div>
                 </div>
               </div>
-
-              {/* เนื้อหา */}
               <div className="flex-1 bg-gray-50 shadow-md rounded-lg p-6">
                 <RichText content={plan.description} />
               </div>
 
-              {/* ภาพ */}
               <div className="w-full md:w-1/3">
                 <img
-                  src={plan.image === "/uploads/null"
+                  src={plan.image === null
                       ? "https://placehold.co/1920x1080"
                       : `${IMAGE_BASE_URL}${plan.image}`
                   }
@@ -72,6 +75,8 @@ const TourDetails = ({ data }) => {
             </div>
           </div>
         ))}
+        </>
+      )}
       </div>
     </div>
   );

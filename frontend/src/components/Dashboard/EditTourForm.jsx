@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import parse from "html-react-parser";
-import { fetchTourById, updateTour } from "./tourService"; // Import API
+import { getTourById, updateTour } from "./tourService"; // Import API
 import "./AddTourForm.css";
 
 const EditTourForm = () => {
@@ -31,31 +31,33 @@ const EditTourForm = () => {
     not_included: false,
   });
 
+  const loadTourData = async () => {
+    setLoading(true);
+    try {
+      const response = await getTourById(tourId);
+      console.log(response);
+      return;
+      if (response) {
+        setTourData({
+          ...response,
+          information: response.information || "",
+          terms_conditions: response.terms_conditions || "",
+          included: response.included || "",
+          not_included: response.not_included || "",
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching tour:", error);
+      alert("เกิดข้อผิดพลาดในการโหลดข้อมูล");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // ✅ ดึงข้อมูลจาก Backend เมื่อเปิดหน้า Edit
   useEffect(() => {
-    const loadTourData = async () => {
-      setLoading(true);
-      try {
-        const response = await fetchTourById(tourId);
-        if (response) {
-          setTourData({
-            ...response,
-            information: response.information || "",
-            terms_conditions: response.terms_conditions || "",
-            included: response.included || "",
-            not_included: response.not_included || "",
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching tour:", error);
-        alert("เกิดข้อผิดพลาดในการโหลดข้อมูล");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     loadTourData();
-  }, [tourId]);
+  }, []);
 
   const handleQuillChange = (name, value) => {
     setTourData((prevData) => ({
@@ -83,11 +85,31 @@ const EditTourForm = () => {
     let missingFields = [];
 
     if (tourData.title.trim() === "") missingFields.push("ชื่อทัวร์");
-    if (!tourData.information || tourData.information.trim() === "" || tourData.information === "<p><br></p>") missingFields.push("รายละเอียดทัวร์");
-    if (!tourData.terms_conditions || tourData.terms_conditions.trim() === "" || tourData.terms_conditions === "<p><br></p>") missingFields.push("Terms & Conditions");
+    if (
+      !tourData.information ||
+      tourData.information.trim() === "" ||
+      tourData.information === "<p><br></p>"
+    )
+      missingFields.push("รายละเอียดทัวร์");
+    if (
+      !tourData.terms_conditions ||
+      tourData.terms_conditions.trim() === "" ||
+      tourData.terms_conditions === "<p><br></p>"
+    )
+      missingFields.push("Terms & Conditions");
     if (tourData.price.trim() === "") missingFields.push("ราคา");
-    if (!tourData.included || tourData.included.trim() === "" || tourData.included === "<p><br></p>") missingFields.push("Included");
-    if (!tourData.not_included || tourData.not_included.trim() === "" || tourData.not_included === "<p><br></p>") missingFields.push("Not Included");
+    if (
+      !tourData.included ||
+      tourData.included.trim() === "" ||
+      tourData.included === "<p><br></p>"
+    )
+      missingFields.push("Included");
+    if (
+      !tourData.not_included ||
+      tourData.not_included.trim() === "" ||
+      tourData.not_included === "<p><br></p>"
+    )
+      missingFields.push("Not Included");
 
     if (missingFields.length > 0) {
       alert(`โปรดกรอกข้อมูลให้ครบถ้วน:\n- ${missingFields.join("\n- ")}`);
@@ -112,7 +134,9 @@ const EditTourForm = () => {
       <h1 className="text-xl font-bold mb-4">แก้ไขโปรแกรมทัวร์</h1>
       <form onSubmit={handleSave}>
         <div className="mb-6">
-          <label>ชื่อทัวร์ <span className="text-red-700">*</span></label>
+          <label>
+            ชื่อทัวร์ <span className="text-red-700">*</span>
+          </label>
           <input
             type="text"
             name="title"
@@ -124,49 +148,67 @@ const EditTourForm = () => {
         </div>
 
         <div className="mb-6">
-          <label>รายละเอียดทัวร์ <span className="text-red-700">*</span></label>
+          <label>
+            รายละเอียดทัวร์ <span className="text-red-700">*</span>
+          </label>
           <ReactQuill
             theme="snow"
             value={tourData.information}
             onChange={(value) => handleQuillChange("information", value)}
-            className={`border rounded bg-white ${errors.information ? "border-red-500" : ""}`}
+            className={`border rounded bg-white ${
+              errors.information ? "border-red-500" : ""
+            }`}
           />
         </div>
 
         <div className="mb-6">
-          <label>Terms & Conditions <span className="text-red-700">*</span></label>
+          <label>
+            Terms & Conditions <span className="text-red-700">*</span>
+          </label>
           <ReactQuill
             theme="snow"
             value={tourData.terms_conditions}
             onChange={(value) => handleQuillChange("terms_conditions", value)}
-            className={`border rounded bg-white ${errors.terms_conditions ? "border-red-500" : ""}`}
+            className={`border rounded bg-white ${
+              errors.terms_conditions ? "border-red-500" : ""
+            }`}
           />
         </div>
 
         <div className="mb-6">
-          <label>Included <span className="text-red-700">*</span></label>
+          <label>
+            Included <span className="text-red-700">*</span>
+          </label>
           <ReactQuill
             theme="snow"
             value={tourData.included}
             onChange={(value) => handleQuillChange("included", value)}
-            className={`border rounded bg-white ${errors.included ? "border-red-500" : ""}`}
+            className={`border rounded bg-white ${
+              errors.included ? "border-red-500" : ""
+            }`}
           />
         </div>
 
         <div className="mb-6">
-          <label>Not Included <span className="text-red-700">*</span></label>
+          <label>
+            Not Included <span className="text-red-700">*</span>
+          </label>
           <ReactQuill
             theme="snow"
             value={tourData.not_included}
             onChange={(value) => handleQuillChange("not_included", value)}
-            className={`border rounded bg-white ${errors.not_included ? "border-red-500" : ""}`}
+            className={`border rounded bg-white ${
+              errors.not_included ? "border-red-500" : ""
+            }`}
           />
         </div>
 
         <div className="flex justify-end space-x-2 mt-6">
           <button
             type="submit"
-            className={`bg-black text-white px-4 py-2 rounded ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+            className={`bg-black text-white px-4 py-2 rounded ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
             disabled={loading}
           >
             {loading ? "กำลังอัปเดต..." : "อัปเดตโปรแกรม"}

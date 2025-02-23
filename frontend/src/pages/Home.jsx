@@ -20,13 +20,13 @@ const Home = () => {
   const handleSearch = (filters) => {
     console.log("Filters received in Home:", filters);
     setLoading(true);
-  
+
     const queryParams = new URLSearchParams({
       country: filters.country || "",
       month: filters.month || "",
       maxPrice: filters.maxPrice || 0,
     }).toString();
-  
+
     fetch(`http://gography.website:3004/api/tours?${queryParams}`)
       .then((response) => response.json())
       .then((data) => {
@@ -47,7 +47,8 @@ const Home = () => {
   return (
     <>
       <div>
-        <div className="h-[800px] relative">
+        <div className="">
+          {/* <div className="h-[800px] relative"> */}
           {/* <video
             autoPlay
             loop
@@ -59,7 +60,6 @@ const Home = () => {
 
           {/* ส่ง handleSearch ไปยัง Hero2 */}
           <HeroSlider />
-       
         </div>
         {/* ส่ง filteredTours และ loading ไปยัง Places */}
         <Places

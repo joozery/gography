@@ -1,5 +1,10 @@
 import React from "react";
 import VideoSrc from "../../assets/video/VID.mp4";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 // นำเข้าภาพ
 import Img1 from "../../assets/places/01.jpeg";
@@ -10,27 +15,26 @@ import Img5 from "../../assets/places/05.jpg";
 import Img6 from "../../assets/places/06.jpg";
 import Img7 from "../../assets/places/07.jpg";
 
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+// CSS Custom Pagination & Navigation
+const swiperStyles = `
+  .swiper-pagination-bullet {
+    background: #B0B0B0 !important; /* สีเทา */
+    opacity: 1 !important;
+  }
+  .swiper-pagination-bullet-active {
+    background: #FFFFFF !important; /* สีขาว */
+  }
+  .swiper-button-prev, .swiper-button-next {
+    color: #D3D3D3 !important; /* เทาอ่อน */
+  }
+  @media (max-width: 767px) {
+    .swiper-button-prev, .swiper-button-next {
+      display: none !important; /* ซ่อนปุ่มลูกศร แต่ยังแสดงรูป */
+    }
+  }
+`;
 
 const StartExploring = () => {
-  const sliderSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-    ],
-  };
-
   const sliderImages = [Img1, Img2, Img3, Img4, Img5, Img6, Img7];
 
   return (
@@ -42,6 +46,8 @@ const StartExploring = () => {
                      #05141B`,
       }}
     >
+      <style>{swiperStyles}</style> {/* ใช้ Custom CSS */}
+      
       <div className="container mx-auto">
         <h2 className="text-center text-3xl font-bold text-white mb-10">
           START EXPLORING
@@ -69,22 +75,38 @@ const StartExploring = () => {
           </div>
         </div>
 
-        {/* สไลด์ภาพ */}
+        {/* สไลด์ภาพ - ใช้ Swiper Responsive */}
         <div className="mt-16">
           <h3 className="text-center text-2xl font-bold text-white mb-8">
             Explore Beautiful Destinations
           </h3>
-          <Slider {...sliderSettings} className="max-w-[1200px] mx-auto">
-            {sliderImages.map((img, index) => (
-              <div key={index} className="px-4">
-                <img
-                  src={img}
-                  alt={`Slide ${index + 1}`}
-                  className="w-full h-[300px] object-cover rounded-lg shadow-lg"
-                />
-              </div>
-            ))}
-          </Slider>
+          <div className="max-w-[1200px] mx-auto overflow-hidden">
+            <Swiper
+              modules={[Autoplay, Pagination, Navigation]}
+              spaceBetween={20}
+              navigation={true}
+              pagination={{ clickable: true }}
+              autoplay={{ delay: 3000, disableOnInteraction: false }}
+              breakpoints={{
+                0: { slidesPerView: 1 },  // มือถือแสดง 1 รูป
+                768: { slidesPerView: 2 }, // Tablet แสดง 2 รูป
+                1024: { slidesPerView: 3 }, // Desktop แสดง 3 รูป
+              }}
+              className="swiper-container"
+            >
+              {sliderImages.map((img, index) => (
+                <SwiperSlide key={index}>
+                  <div className="px-4">
+                    <img
+                      src={img}
+                      alt={`Slide ${index + 1}`}
+                      className="w-full h-[300px] object-cover rounded-lg shadow-lg"
+                    />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
         </div>
       </div>
     </div>

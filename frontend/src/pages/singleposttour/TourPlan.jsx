@@ -64,7 +64,7 @@ const TourDetails = ({ data }) => {
                         </div>
                       </div>
                     </div>
-                    <div className="flex-1 bg-gray-50 shadow-md rounded-lg p-6">
+                    <div className="flex-1 bg-gray-50 shadow-md rounded-lg p-6 break-words">
                       <RichText content={plan.description} />
                     </div>
 
@@ -118,7 +118,7 @@ const TourDetails = ({ data }) => {
                           </div>
                         </div>
 
-                        <div className="flex-1 bg-gray-50 shadow-md rounded-lg p-2 sm:p-6 ml-6 sm:ml-10">
+                        <div className="flex-1 bg-gray-50 shadow-md rounded-lg p-2 sm:p-6 ml-6 sm:ml-10 break-words">
                           <RichText content={plan.description} />
                         </div>
 

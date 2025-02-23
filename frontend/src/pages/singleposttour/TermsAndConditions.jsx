@@ -8,7 +8,7 @@ const TermsAndConditions = ({ terms_conditions }) => {
 
   return (
     <div
-      className="min-h-screen px-5 py-10"
+      // className="min-h-screen px-5 py-10"
       style={{
         background:
           "radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1), transparent 50%), radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.1), transparent 50%), rgb(5, 20, 27)",

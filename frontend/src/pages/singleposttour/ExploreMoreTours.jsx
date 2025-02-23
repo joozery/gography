@@ -31,7 +31,7 @@ const ExploreMoreTours = () => {
 
         const formattedTours = data.tours.map((tour) => ({
           id: tour.id,
-          image: tour.cover_image || "https://placehold.co/400x300",
+          image: tour.cover_image,
           title: tour.title || "No Title",
           price: tour.price || "N/A",
         }));
@@ -97,10 +97,10 @@ const ExploreMoreTours = () => {
           {tours.map((tour) => (
             <div
               key={tour.id}
-              className="border rounded-lg shadow-md p-4 bg-white mx-4"
+              className="border rounded-xl p-2 bg-white"
             >
               <img
-                src={`${API_URL}${tour.image}`}
+                src={`${tour.image === 'https://placehold.co/600x400' ? tour.image : API_URL+tour.image}`}
                 alt={tour.title}
                 className="w-full h-[280px] object-cover rounded-t-lg"
               />

@@ -16,7 +16,7 @@ const PriceSection = ({ included, not_included, price }) => {
   
   return (
     <div
-      className="min-h- px-5 py-6" // ลด padding จาก py-10 เป็น py-6
+      // className="min-h-screen px-5 py-6" // ลด padding จาก py-10 เป็น py-6
       style={{
         background:
           "radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1), transparent 50%), radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.1), transparent 50%), rgb(5, 20, 27)",

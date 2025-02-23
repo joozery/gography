@@ -108,7 +108,7 @@ const SlideShow = () => {
 
   return (
     <div
-      className="min-h-[700px]  bg-cover bg-center text-white flex flex-col justify-end p-10 pb-24 transition-all duration-500 overflow-hidden"
+      className="min-h-[800px]  bg-cover bg-center text-white flex flex-col justify-end p-10 pb-24 transition-all duration-500 overflow-hidden"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
       <div className="w-full mt-20 md:mt-0">

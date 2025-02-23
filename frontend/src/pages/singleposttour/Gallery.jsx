@@ -22,7 +22,8 @@ const Gallery = () => {
 
   return (
     <div
-      className="min-h-full px-4 py-8"
+      // className="min-h-full px-4 py-8"
+      className="container mx-auto px-6 py-12"
       style={{
         background:
           "radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1), transparent 50%), radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.1), transparent 50%), rgb(5, 20, 27)",
